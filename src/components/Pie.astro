@@ -1,0 +1,140 @@
+---
+import { Image } from 'astro:assets';
+import monograma from '../assets/logos/a-blanco.png';
+import { enlaceWhatsApp, menu, redesPublicadas, sitio } from '../config/sitio';
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="pie" id="contacto">
+	<div class="contenedor">
+		<div class="columnas">
+			<div class="bloque-marca">
+				<Image src={monograma} alt={sitio.nombre} width={56} densities={[1.5, 2]} />
+				<p class="ubicacion">{sitio.ubicacion}</p>
+			</div>
+
+			<div>
+				<h2 class="titulo">Contacto</h2>
+				<ul class="lista">
+					<li><a href={`mailto:${sitio.correo}`}>{sitio.correo}</a></li>
+					<li><a href={`tel:${sitio.telefono.e164}`}>{sitio.telefono.visible}</a></li>
+					<li>
+						<a href={enlaceWhatsApp} target="_blank" rel="noopener noreferrer">
+							WhatsApp<span class="solo-lector"> (se abre en otra pestaña)</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<nav aria-label="Pie de página">
+				<h2 class="titulo">Menú</h2>
+				<ul class="lista">
+					{
+						menu.map((enlace) => (
+							<li>
+								<a href={enlace.href}>{enlace.texto}</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			{
+				redesPublicadas.length > 0 && (
+					<div>
+						<h2 class="titulo">Redes</h2>
+						<ul class="lista">
+							{redesPublicadas.map((red) => (
+								<li>
+									<a href={red.url} target="_blank" rel="noopener noreferrer">
+										{red.nombre}
+										<span class="solo-lector"> (se abre en otra pestaña)</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+		</div>
+
+		<div class="legal">
+			<p>© {anio} {sitio.nombre}</p>
+			{sitio.avisoPrivacidad && <a href={sitio.avisoPrivacidad}>Aviso de privacidad</a>}
+		</div>
+	</div>
+</footer>
+
+<style>
+	.pie {
+		margin-top: 4rem;
+		padding-block: 3rem 2rem;
+		border-top: 1px solid var(--color-linea);
+		background: var(--color-fondo);
+	}
+
+	.columnas {
+		display: grid;
+		gap: 2.5rem;
+	}
+
+	@media (min-width: 48rem) {
+		.columnas {
+			grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+		}
+	}
+
+	.bloque-marca {
+		display: grid;
+		gap: 1rem;
+		align-content: start;
+		justify-items: start;
+	}
+
+	.ubicacion {
+		color: var(--color-texto-suave);
+	}
+
+	.titulo {
+		margin-bottom: 0.5rem;
+		font-family: var(--fuente-texto);
+		font-size: var(--texto-pequeno);
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-texto-tenue);
+	}
+
+	.lista {
+		padding: 0;
+		list-style: none;
+	}
+
+	.lista a {
+		display: inline-flex;
+		align-items: center;
+		min-height: var(--objetivo-tactil);
+		color: var(--color-texto-suave);
+		text-decoration: none;
+		overflow-wrap: anywhere;
+	}
+
+	.lista a:hover {
+		color: var(--color-texto);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	.legal {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1.5rem;
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--color-linea);
+		font-size: var(--texto-pequeno);
+		color: var(--color-texto-tenue);
+	}
+</style>

@@ -1,0 +1,217 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logos/alexo-film-blanco.png';
+import { menu, sitio } from '../config/sitio';
+---
+
+<header class="encabezado" data-encabezado>
+	<div class="contenedor fila">
+		<a href="/" class="marca" aria-label={`${sitio.nombre}, ir al inicio`}>
+			<Image src={logo} alt="" width={116} densities={[1.5, 2]} loading="eager" />
+		</a>
+
+		<button
+			type="button"
+			class="boton-menu"
+			aria-expanded="false"
+			aria-controls="menu-principal"
+			hidden
+			data-boton-menu
+		>
+			<span class="solo-lector">Abrir menú</span>
+			<span class="icono" aria-hidden="true"></span>
+		</button>
+
+		<nav id="menu-principal" class="menu" aria-label="Principal" data-menu>
+			<ul>
+				{
+					menu.map((enlace) => (
+						<li>
+							<a href={enlace.href}>{enlace.texto}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.encabezado {
+		position: relative;
+		z-index: 10;
+		padding-block: 1rem;
+	}
+
+	.fila {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	/* Aire alrededor del logo: al menos la altura de la barra del logo */
+	.marca {
+		display: inline-block;
+		padding: 0.25rem;
+	}
+
+	.menu ul {
+		display: flex;
+		gap: 0.5rem 1.75rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.menu a {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		min-height: var(--objetivo-tactil);
+		font-family: var(--fuente-texto);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	/* Subrayado arcoíris en hover y foco */
+	.menu a::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0.5rem;
+		height: 2px;
+		background: var(--gradiente-alexo);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.25s ease;
+	}
+
+	.menu a:hover::after,
+	.menu a:focus-visible::after {
+		transform: scaleX(1);
+	}
+
+	.boton-menu {
+		display: inline-grid;
+		place-items: center;
+		width: var(--objetivo-tactil);
+		height: var(--objetivo-tactil);
+		padding: 0;
+		background: none;
+		border: 0;
+		cursor: pointer;
+	}
+
+	.boton-menu[hidden] {
+		display: none;
+	}
+
+	/* Tres líneas que se convierten en una X al abrir */
+	.icono,
+	.icono::before,
+	.icono::after {
+		display: block;
+		width: 24px;
+		height: 2px;
+		background: currentColor;
+		transition: transform 0.25s ease, opacity 0.25s ease;
+	}
+
+	.icono {
+		position: relative;
+	}
+
+	.icono::before,
+	.icono::after {
+		content: '';
+		position: absolute;
+		left: 0;
+	}
+
+	.icono::before {
+		top: -7px;
+	}
+
+	.icono::after {
+		top: 7px;
+	}
+
+	.boton-menu[aria-expanded='true'] .icono {
+		background: transparent;
+	}
+
+	.boton-menu[aria-expanded='true'] .icono::before {
+		transform: translateY(7px) rotate(45deg);
+	}
+
+	.boton-menu[aria-expanded='true'] .icono::after {
+		transform: translateY(-7px) rotate(-45deg);
+	}
+
+	/* Celular: con JavaScript, el menú se pliega bajo el botón */
+	@media (max-width: 47.99rem) {
+		.encabezado.con-js .menu {
+			flex-basis: 100%;
+		}
+
+		.encabezado.con-js .menu:not(.abierto) {
+			display: none;
+		}
+
+		.encabezado.con-js .menu ul {
+			flex-direction: column;
+			gap: 0;
+			padding-block: 0.5rem 1rem;
+			border-top: 1px solid var(--color-linea);
+		}
+
+		.encabezado.con-js .menu a {
+			width: 100%;
+			font-size: 1.25rem;
+		}
+	}
+
+	/* Escritorio: el botón nunca se ve */
+	@media (min-width: 48rem) {
+		.boton-menu {
+			display: none;
+		}
+	}
+</style>
+
+<script>
+	const encabezado = document.querySelector<HTMLElement>('[data-encabezado]');
+	const boton = document.querySelector<HTMLButtonElement>('[data-boton-menu]');
+	const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+	if (encabezado && boton && menu) {
+		const etiqueta = boton.querySelector('.solo-lector');
+
+		const alternar = (abrir: boolean) => {
+			boton.setAttribute('aria-expanded', String(abrir));
+			menu.classList.toggle('abierto', abrir);
+			if (etiqueta) etiqueta.textContent = abrir ? 'Cerrar menú' : 'Abrir menú';
+		};
+
+		encabezado.classList.add('con-js');
+		boton.hidden = false;
+
+		boton.addEventListener('click', () => {
+			alternar(boton.getAttribute('aria-expanded') !== 'true');
+		});
+
+		// Elegir un enlace cierra el menú (las anclas no recargan la página)
+		menu.addEventListener('click', (evento) => {
+			if ((evento.target as HTMLElement).closest('a')) alternar(false);
+		});
+
+		document.addEventListener('keydown', (evento) => {
+			if (evento.key === 'Escape' && boton.getAttribute('aria-expanded') === 'true') {
+				alternar(false);
+				boton.focus();
+			}
+		});
+	}
+</script>

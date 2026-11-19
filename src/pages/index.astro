@@ -1,16 +1,36 @@
 ---
+import Base from '../layouts/Base.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base>
+	<!-- Provisional (fase 1): muestra la tipografía y los colores. Se reemplaza en las fases 2 y 3. -->
+	<section class="contenedor muestra">
+		<h1 class="hero">Film &amp; Photography.</h1>
+		<span class="barra-alexo" aria-hidden="true"></span>
+		<p class="subtitulo">
+			Fotografía y producción audiovisual desde una mirada cinematográfica, creativa y
+			contemporánea.
+		</p>
+	</section>
+</Base>
+
+<style>
+	.muestra {
+		display: grid;
+		gap: 1.5rem;
+		padding-block: 4rem;
+	}
+
+	.hero {
+		font-size: var(--texto-hero);
+	}
+
+	.subtitulo {
+		max-width: 28ch;
+		font-family: var(--fuente-titulos);
+		font-size: var(--texto-subtitulo);
+		font-weight: 400;
+		line-height: 1.2;
+		color: var(--color-texto-suave);
+	}
+</style>

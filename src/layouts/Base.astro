@@ -1,0 +1,62 @@
+---
+import { Font } from 'astro:assets';
+import Encabezado from '../components/Encabezado.astro';
+import Pie from '../components/Pie.astro';
+import { sitio } from '../config/sitio';
+import '../styles/global.css';
+
+interface Props {
+	/** Título de la página; se completa con " · ALEXO". Omitir en la portada. */
+	titulo?: string;
+	descripcion?: string;
+}
+
+const { titulo, descripcion = sitio.descripcion } = Astro.props;
+const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : `${sitio.nombre} · Film & Photography`;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{tituloCompleto}</title>
+		<meta name="description" content={descripcion} />
+		<meta name="theme-color" content="#000000" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<Font cssVariable="--font-display" preload />
+		<Font cssVariable="--font-text" preload />
+	</head>
+	<body>
+		<a class="saltar" href="#contenido">Saltar al contenido</a>
+		<Encabezado />
+		<main id="contenido" tabindex="-1">
+			<slot />
+		</main>
+		<Pie />
+	</body>
+</html>
+
+<style>
+	.saltar {
+		position: absolute;
+		top: 0.5rem;
+		left: 0.5rem;
+		z-index: 100;
+		padding: 0.75rem 1rem;
+		background: var(--color-texto);
+		color: var(--color-fondo);
+		font-weight: 600;
+		transform: translateY(-200%);
+	}
+
+	.saltar:focus {
+		transform: none;
+	}
+
+	main:focus {
+		outline: none;
+	}
+</style>
