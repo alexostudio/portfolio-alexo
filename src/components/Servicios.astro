@@ -1,0 +1,59 @@
+---
+import { servicios } from '../data/servicios';
+---
+
+<section class="seccion contenedor servicios" aria-labelledby="servicios-titulo">
+	<div class="cabecera">
+		<h2 id="servicios-titulo" class="titulo-seccion">Nuestros servicios</h2>
+		<span class="barra-alexo" aria-hidden="true"></span>
+	</div>
+
+	<ul class="lista">
+		{
+			servicios.map((servicio) => (
+				<li class="tarjeta">
+					<h3>{servicio.titulo}</h3>
+					<p>{servicio.descripcion}</p>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.servicios {
+		display: grid;
+		gap: 2.5rem;
+	}
+
+	.cabecera {
+		display: grid;
+		gap: 1rem;
+	}
+
+	/* Tantas columnas como quepan (3 en escritorio, 1 en celular) */
+	.lista {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+		gap: 1.25rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.tarjeta {
+		display: grid;
+		align-content: start;
+		gap: 1rem;
+		padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+		background: var(--color-superficie);
+		border: 1px solid var(--color-linea);
+	}
+
+	h3 {
+		font-size: var(--texto-tarjeta);
+	}
+
+	p {
+		color: var(--color-texto-suave);
+	}
+</style>

@@ -40,6 +40,7 @@
 
 	/* Espaciado y medidas */
 	--margen-lateral: clamp(1.25rem, 0.5rem + 3vw, 3.5rem);
+	--espacio-seccion: clamp(4rem, 2.514rem + 6.095vw, 8rem); /* 64 → 128 px entre secciones */
 	--ancho-maximo: 90rem;
 	--alto-barra: 4px;
 	--objetivo-tactil: 44px;
@@ -142,6 +143,15 @@ button {
 	height: var(--alto-barra);
 	border: 0;
 	background: var(--gradiente-alexo);
+}
+
+/* Bloque de sección de la portada: espacio vertical común */
+.seccion {
+	padding-block: var(--espacio-seccion);
+}
+
+.titulo-seccion {
+	font-size: var(--texto-seccion);
 }
 
 /* Oculto a la vista, pero disponible para lectores de pantalla */
