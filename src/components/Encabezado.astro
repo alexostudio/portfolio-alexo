@@ -2,9 +2,16 @@
 import { Image } from 'astro:assets';
 import logo from '../assets/logos/alexo-film-blanco.png';
 import { menu, sitio } from '../config/sitio';
+
+interface Props {
+	/** Encima del contenido (hero con video), con fondo transparente. */
+	superpuesto?: boolean;
+}
+
+const { superpuesto = false } = Astro.props;
 ---
 
-<header class="encabezado" data-encabezado>
+<header class:list={['encabezado', { superpuesto }]} data-encabezado>
 	<div class="contenedor fila">
 		<a href="/" class="marca" aria-label={`${sitio.nombre}, ir al inicio`}>
 			<Image src={logo} alt="" width={116} densities={[1.5, 2]} loading="eager" />
@@ -41,6 +48,11 @@ import { menu, sitio } from '../config/sitio';
 		position: relative;
 		z-index: 10;
 		padding-block: 1rem;
+	}
+
+	.encabezado.superpuesto {
+		position: absolute;
+		inset: 0 0 auto;
 	}
 
 	.fila {
@@ -170,6 +182,11 @@ import { menu, sitio } from '../config/sitio';
 		.encabezado.con-js .menu a {
 			width: 100%;
 			font-size: 1.25rem;
+		}
+
+		/* Sobre el video, el menú abierto necesita fondo propio para leerse */
+		.encabezado.superpuesto.con-js:has(.menu.abierto) {
+			background: var(--color-fondo);
 		}
 	}
 

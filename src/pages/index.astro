@@ -1,36 +1,8 @@
 ---
+import Hero from '../components/Hero.astro';
 import Base from '../layouts/Base.astro';
 ---
 
-<Base>
-	<!-- Provisional (fase 1): muestra la tipografía y los colores. Se reemplaza en las fases 2 y 3. -->
-	<section class="contenedor muestra">
-		<h1 class="hero">Film &amp; Photography.</h1>
-		<span class="barra-alexo" aria-hidden="true"></span>
-		<p class="subtitulo">
-			Fotografía y producción audiovisual desde una mirada cinematográfica, creativa y
-			contemporánea.
-		</p>
-	</section>
+<Base encabezadoSuperpuesto>
+	<Hero />
 </Base>
-
-<style>
-	.muestra {
-		display: grid;
-		gap: 1.5rem;
-		padding-block: 4rem;
-	}
-
-	.hero {
-		font-size: var(--texto-hero);
-	}
-
-	.subtitulo {
-		max-width: 28ch;
-		font-family: var(--fuente-titulos);
-		font-size: var(--texto-subtitulo);
-		font-weight: 400;
-		line-height: 1.2;
-		color: var(--color-texto-suave);
-	}
-</style>

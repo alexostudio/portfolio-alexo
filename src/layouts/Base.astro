@@ -9,9 +9,11 @@ interface Props {
 	/** Título de la página; se completa con " · ALEXO". Omitir en la portada. */
 	titulo?: string;
 	descripcion?: string;
+	/** El encabezado va encima del primer bloque (p. ej. el hero con video). */
+	encabezadoSuperpuesto?: boolean;
 }
 
-const { titulo, descripcion = sitio.descripcion } = Astro.props;
+const { titulo, descripcion = sitio.descripcion, encabezadoSuperpuesto = false } = Astro.props;
 const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : `${sitio.nombre} · Film & Photography`;
 ---
 
@@ -31,7 +33,7 @@ const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : `${sitio.nombre
 	</head>
 	<body>
 		<a class="saltar" href="#contenido">Saltar al contenido</a>
-		<Encabezado />
+		<Encabezado superpuesto={encabezadoSuperpuesto} />
 		<main id="contenido" tabindex="-1">
 			<slot />
 		</main>

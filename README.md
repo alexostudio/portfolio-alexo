@@ -6,8 +6,8 @@ Sitio estático hecho con [Astro](https://astro.build).
 ## Estado
 
 En construcción. Ya están la base visual (tipografía Wix Madefor autoalojada, colores de
-marca, encabezado con menú adaptable al celular y pie de página). Faltan el hero con video,
-las secciones de la portada y las páginas de proyectos.
+marca, encabezado con menú adaptable al celular y pie de página) y la portada con video de
+fondo. Faltan las secciones de la portada y las páginas de proyectos.
 
 ## Requisitos
 
@@ -31,7 +31,11 @@ src/
 ├── config/sitio.ts      Datos de contacto, menú y redes (editar aquí)
 ├── styles/global.css    Colores, tipografía y estilos base
 ├── layouts/Base.astro   Estructura común de las páginas
-├── components/          Encabezado y pie de página
+├── components/          Encabezado, portada (hero) y pie de página
 ├── pages/               Rutas del sitio
-└── assets/logos/        Logotipos
+└── assets/              Logotipos e imágenes (Astro las optimiza)
+public/video/            Video de la portada, ya comprimido
 ```
+
+Los videos de `public/video/` se sirven tal cual. Para reemplazarlos, comprímelos antes
+(H.264 y VP9, sin audio, menos de 10 MB cada uno).

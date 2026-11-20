@@ -1,0 +1,276 @@
+---
+import { Picture } from 'astro:assets';
+import poster from '../assets/hero/poster.jpg';
+import { sitio } from '../config/sitio';
+---
+
+<section class="hero" aria-labelledby="hero-titulo" data-hero>
+	<!-- Capas de fondo: poster (siempre) → video (si hay JS y no se pidió reducir movimiento) → velo -->
+	<div class="fondo" aria-hidden="true">
+		<Picture
+			src={poster}
+			alt=""
+			formats={['avif', 'webp']}
+			widths={[640, 960, 1280, 1920]}
+			sizes="100vw"
+			loading="eager"
+			fetchpriority="high"
+			class="poster"
+		/>
+		<video class="video" muted loop playsinline preload="none" tabindex="-1" data-video>
+			<source src="/video/hero-720.mp4" type="video/mp4" media="(max-width: 768px)" />
+			<source src="/video/hero.webm" type="video/webm" />
+			<source src="/video/hero.mp4" type="video/mp4" />
+		</video>
+		<div class="velo"></div>
+	</div>
+
+	<div class="contenedor contenido">
+		<div class="textos">
+			<h1 id="hero-titulo">Film &amp; Photography.</h1>
+			<p class="subtitulo">{sitio.descripcion}</p>
+		</div>
+
+		<div class="base">
+			<a href="/#proyectos" class="explorar">
+				Explorar Proyectos <span aria-hidden="true">→</span>
+			</a>
+
+			<address class="datos">
+				<span>{sitio.ubicacion}</span>
+				<a href={`mailto:${sitio.correo}`}>{sitio.correo}</a>
+				<a href={`tel:${sitio.telefono.e164}`}>{sitio.telefono.visible}</a>
+			</address>
+
+			<button type="button" class="pausa" aria-label="Pausar video" hidden data-pausa>
+				<span class="icono-pausa" aria-hidden="true"></span>
+			</button>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		display: grid;
+		min-height: 100svh;
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	/* Fondo */
+	.fondo,
+	.fondo > :global(*) {
+		position: absolute;
+		inset: 0;
+	}
+
+	.fondo {
+		z-index: -1;
+	}
+
+	.fondo :global(img),
+	.video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.video {
+		opacity: 0;
+		transition: opacity 0.8s ease;
+	}
+
+	.hero.reproduciendo .video {
+		opacity: 1;
+	}
+
+	/* Oscurece arriba (encabezado) y abajo (datos) para que el texto blanco se lea */
+	.velo {
+		background:
+			linear-gradient(
+				to bottom,
+				rgb(0 0 0 / 0.6) 0%,
+				rgb(0 0 0 / 0.25) 30%,
+				rgb(0 0 0 / 0.3) 60%,
+				rgb(0 0 0 / 0.8) 100%
+			);
+	}
+
+	/* Contenido */
+	.contenido {
+		display: grid;
+		grid-template-rows: 1fr auto;
+		gap: 2.5rem;
+		padding-block: 7rem 1.5rem; /* arriba: espacio del encabezado superpuesto */
+	}
+
+	.textos {
+		align-self: center;
+		display: grid;
+		gap: 1rem;
+		max-width: 48rem;
+	}
+
+	h1 {
+		font-size: var(--texto-hero);
+	}
+
+	.subtitulo {
+		font-family: var(--fuente-titulos);
+		font-size: var(--texto-subtitulo);
+		font-weight: 400;
+		line-height: 1.2;
+		color: var(--color-texto-suave);
+	}
+
+	.base {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 1.5rem;
+	}
+
+	.explorar {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		min-height: var(--objetivo-tactil);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.explorar::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0.4rem;
+		height: 2px;
+		background: var(--gradiente-alexo);
+		transform: scaleX(0.35);
+		transform-origin: left;
+		transition: transform 0.3s ease;
+	}
+
+	.explorar:hover::after,
+	.explorar:focus-visible::after {
+		transform: scaleX(1);
+	}
+
+	.datos {
+		display: grid;
+		font-style: normal;
+		font-size: var(--texto-pequeno);
+		color: var(--color-texto-suave);
+	}
+
+	.datos a {
+		display: inline-flex;
+		align-items: center;
+		min-height: var(--objetivo-tactil);
+		text-decoration: none;
+		overflow-wrap: anywhere;
+	}
+
+	.datos a:hover {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	@media (min-width: 48rem) {
+		.datos {
+			margin-left: auto;
+			text-align: right;
+			justify-items: end;
+		}
+	}
+
+	/* Botón de pausa (WCAG 2.2.2: movimiento de más de 5 s necesita poder detenerse) */
+	.pausa {
+		display: inline-grid;
+		place-items: center;
+		width: var(--objetivo-tactil);
+		height: var(--objetivo-tactil);
+		padding: 0;
+		border: 1px solid rgb(255 255 255 / 0.5);
+		border-radius: 50%;
+		background: rgb(0 0 0 / 0.35);
+		cursor: pointer;
+	}
+
+	.pausa[hidden] {
+		display: none;
+	}
+
+	.pausa:hover {
+		border-color: var(--color-texto);
+	}
+
+	/* Dos barras = pausar; triángulo = reproducir */
+	.icono-pausa {
+		width: 12px;
+		height: 14px;
+		border-inline: 4px solid currentColor;
+	}
+
+	.pausa[aria-pressed='true'] .icono-pausa {
+		width: 0;
+		height: 0;
+		border-block: 8px solid transparent;
+		border-inline: 13px solid currentColor;
+		border-inline-end: 0;
+		margin-left: 4px;
+	}
+</style>
+
+<script>
+	const hero = document.querySelector<HTMLElement>('[data-hero]');
+	const video = hero?.querySelector<HTMLVideoElement>('[data-video]');
+	const boton = hero?.querySelector<HTMLButtonElement>('[data-pausa]');
+	const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	if (hero && video && boton) {
+		const marcarPausa = (pausado: boolean) => {
+			boton.setAttribute('aria-pressed', String(pausado));
+			boton.setAttribute('aria-label', pausado ? 'Reproducir video' : 'Pausar video');
+		};
+
+		// El video se muestra solo cuando ya pinta fotogramas; hasta entonces se ve el poster.
+		video.addEventListener('playing', () => hero.classList.add('reproduciendo'), { once: true });
+
+		const iniciar = () => {
+			// preload="none" + play(): el video se descarga solo aquí, nunca con movimiento reducido.
+			video
+				.play()
+				.then(() => {
+					boton.hidden = false;
+					marcarPausa(false);
+				})
+				.catch(() => {
+					// Autoplay bloqueado (p. ej. ahorro de datos): se queda el poster.
+				});
+		};
+
+		boton.addEventListener('click', () => {
+			if (video.paused) {
+				video.play();
+				marcarPausa(false);
+			} else {
+				video.pause();
+				marcarPausa(true);
+			}
+		});
+
+		if (!reducirMovimiento.matches) iniciar();
+
+		reducirMovimiento.addEventListener('change', (evento) => {
+			if (evento.matches && !video.paused) {
+				video.pause();
+				marcarPausa(true);
+			}
+		});
+	}
+</script>
