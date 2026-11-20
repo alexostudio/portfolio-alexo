@@ -2,26 +2,27 @@
 // Remate de la portada (references/estructura.md, sección 7).
 ---
 
-<section class="seccion contenedor cierre" aria-labelledby="cierre-titulo">
-	<h2 id="cierre-titulo">Hagamos algo extraordinario.</h2>
-	<span class="barra-alexo barra-larga" aria-hidden="true"></span>
+<section class="seccion contenedor" aria-labelledby="cierre-titulo">
+	<div class="titulo-con-barra cierre">
+		<!-- Salto explícito: con un salto automático la caja no se encoge a la línea más larga
+		     y la barra quedaría más ancha que el texto. -->
+		<h2 id="cierre-titulo">Hagamos algo<br /> extraordinario.</h2>
+		<span class="barra-alexo barra-gruesa" aria-hidden="true"></span>
+	</div>
 </section>
 
 <style>
 	.cierre {
-		display: grid;
 		gap: 2rem;
 	}
 
 	h2 {
-		max-width: 14ch;
 		font-size: var(--texto-cierre);
 		line-height: 1;
 		letter-spacing: -0.01em;
 	}
 
-	.barra-larga {
-		width: min(100%, 16rem);
+	.barra-gruesa {
 		height: calc(var(--alto-barra) * 1.5);
 	}
 </style>

@@ -7,8 +7,9 @@ Sitio estático hecho con [Astro](https://astro.build).
 
 En construcción. Ya están la base visual (tipografía Wix Madefor autoalojada, colores de
 marca, encabezado con menú adaptable al celular y pie de página) y la portada con video de
-fondo y las secciones Sobre, Detrás de cámara, Servicios y Cierre. Algunas fotos y textos
-están marcados como pendientes. Faltan los proyectos y las páginas interiores.
+fondo, las secciones Sobre, Detrás de cámara, Servicios, Proyectos recientes, Exploraciones
+y Cierre. Parte del contenido es provisional (textos de relleno y colores en lugar de fotos
+que faltan). Faltan las páginas interiores.
 
 ## Requisitos
 
@@ -30,7 +31,7 @@ npm run preview   # sirve ./dist/ para revisarlo antes de publicar
 ```text
 src/
 ├── config/sitio.ts      Datos de contacto, menú y redes (editar aquí)
-├── data/                Contenido editable (servicios)
+├── data/                Contenido editable (servicios, categorías, exploraciones)
 ├── styles/global.css    Colores, tipografía y estilos base
 ├── layouts/Base.astro   Estructura común de las páginas
 ├── components/          Encabezado, secciones de la portada y pie de página
@@ -38,6 +39,10 @@ src/
 └── assets/              Logotipos e imágenes (Astro las optimiza)
 public/video/            Video de la portada, ya comprimido
 ```
+
+Para añadir fotos a una categoría de proyectos, guárdalas en
+`src/assets/proyectos/<categoria>/` (máximo 2560 px de lado largo y sin metadatos de cámara):
+aparecen solas. Las categorías se editan en `src/data/categorias.ts`.
 
 Los videos de `public/video/` se sirven tal cual. Para reemplazarlos, comprímelos antes
 (H.264 y VP9, sin audio, menos de 10 MB cada uno).

@@ -154,6 +154,18 @@ button {
 	font-size: var(--texto-seccion);
 }
 
+/* Título + barra arcoíris del mismo ancho que el texto */
+.titulo-con-barra {
+	display: grid;
+	gap: 1rem;
+	width: fit-content;
+	max-width: 100%;
+}
+
+.titulo-con-barra > .barra-alexo {
+	width: 100%;
+}
+
 /* Oculto a la vista, pero disponible para lectores de pantalla */
 .solo-lector {
 	position: absolute;

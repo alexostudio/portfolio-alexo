@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import { categorias, portadaDe } from '../data/categorias';
+
+// Cuando existan las páginas /proyectos/[slug] (fase 5), cada tarjeta enlazará a la suya.
+const tarjetas = categorias.map((categoria) => ({ ...categoria, portada: portadaDe(categoria) }));
+---
+
+<section id="proyectos" class="seccion contenedor proyectos" aria-labelledby="proyectos-titulo">
+	<div class="titulo-con-barra">
+		<h2 id="proyectos-titulo" class="titulo-seccion">Proyectos recientes</h2>
+		<span class="barra-alexo" aria-hidden="true"></span>
+	</div>
+
+	<ul class="rejilla">
+		{
+			tarjetas.map((tarjeta) => (
+				<li>
+					<article class="tarjeta">
+						<div class="marco-foto">
+							{tarjeta.portada ? (
+								<Image
+									src={tarjeta.portada.imagen}
+									alt={tarjeta.portada.alt}
+									widths={[400, 640, 800, 1200, 1600]}
+									sizes="(min-width: 48rem) calc(50vw - 4rem), 100vw"
+								/>
+							) : (
+								<div class="provisional" style={`background: ${tarjeta.color}`} />
+							)}
+						</div>
+						<h3>{tarjeta.titulo}</h3>
+						<p>{tarjeta.descripcion}</p>
+					</article>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.proyectos {
+		display: grid;
+		gap: 2.5rem;
+	}
+
+	.rejilla {
+		display: grid;
+		gap: 2.5rem 1.5rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	@media (min-width: 48rem) {
+		.rejilla {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	.tarjeta {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	/* Encuadre 3:2 para todas las portadas (recorte pendiente de aprobación de ALEXO) */
+	.marco-foto {
+		aspect-ratio: 3 / 2;
+		overflow: hidden;
+		background: var(--color-superficie);
+	}
+
+	.marco-foto :global(img),
+	.provisional {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	h3 {
+		margin-top: 0.5rem;
+		font-size: var(--texto-tarjeta);
+	}
+
+	p {
+		max-width: 60ch;
+		color: var(--color-texto-suave);
+	}
+</style>

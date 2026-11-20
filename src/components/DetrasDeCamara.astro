@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
+import { COLORES } from '../data/provisional';
 
 // Fotos de references/estructura.md, sección 3. Cuando lleguen:
 //   import claqueta from '../assets/detras/claqueta-script.jpg';
@@ -8,18 +9,21 @@ import { Image } from 'astro:assets';
 interface Toma {
 	imagen: ImageMetadata | null;
 	alt: string;
-	pendiente: string;
+	/** Qué foto va aquí (claqueta y script, equipo de rodaje, línea de tiempo de edición). */
+	contenido: string;
+	/** Color provisional mientras falte la foto. */
+	color: string;
 }
 
 const tomas: Toma[] = [
-	{ imagen: null, alt: '', pendiente: 'claqueta y script' },
-	{ imagen: null, alt: '', pendiente: 'equipo de rodaje' },
-	{ imagen: null, alt: '', pendiente: 'línea de tiempo de edición' },
+	{ imagen: null, alt: '', contenido: 'claqueta y script', color: COLORES.purpura },
+	{ imagen: null, alt: '', contenido: 'equipo de rodaje', color: COLORES.ocre },
+	{ imagen: null, alt: '', contenido: 'línea de tiempo de edición', color: COLORES.azul },
 ];
 ---
 
 <section class="seccion contenedor detras" aria-labelledby="detras-titulo">
-	<div class="cabecera">
+	<div class="titulo-con-barra">
 		<h2 id="detras-titulo" class="titulo-seccion">Detrás de cámara</h2>
 		<span class="barra-alexo" aria-hidden="true"></span>
 	</div>
@@ -36,9 +40,7 @@ const tomas: Toma[] = [
 							sizes="(min-width: 64rem) 26rem, 40vw"
 						/>
 					) : (
-						<div class="provisional">
-							<span>[PENDIENTE: foto de {toma.pendiente}]</span>
-						</div>
+						<div class="provisional" style={`background: ${toma.color}`} data-contenido={toma.contenido} />
 					)}
 				</li>
 			))
@@ -50,11 +52,6 @@ const tomas: Toma[] = [
 	.detras {
 		display: grid;
 		gap: 2.5rem;
-	}
-
-	.cabecera {
-		display: grid;
-		gap: 1rem;
 	}
 
 	/*
@@ -103,19 +100,8 @@ const tomas: Toma[] = [
 		object-fit: cover;
 	}
 
-	/* Texto arriba a la izquierda: la toma siguiente tapa el 25 % derecho de cada recuadro */
+	/* Color provisional (src/data/provisional.ts) mientras falte la foto */
 	.provisional {
-		display: grid;
-		place-items: start;
 		height: 100%;
-		padding: 0.75rem;
-		background: var(--color-superficie);
-		border: 1px solid var(--color-linea);
-		font-size: clamp(0.6875rem, 0.6rem + 0.4vw, 0.875rem);
-		color: var(--color-texto-tenue);
-	}
-
-	.provisional span {
-		max-width: 70%;
 	}
 </style>

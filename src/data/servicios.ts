@@ -1,5 +1,7 @@
 // Servicios de la portada. Títulos de references/estructura.md.
-// Las descripciones las tiene que confirmar ALEXO: no inventar.
+// Las descripciones son provisionales (lorem ipsum) hasta que ALEXO entregue las definitivas.
+
+import { LOREM } from './provisional';
 
 export interface Servicio {
 	titulo: string;
@@ -7,16 +9,7 @@ export interface Servicio {
 }
 
 export const servicios: Servicio[] = [
-	{
-		titulo: 'Producción audiovisual',
-		descripcion: '[PENDIENTE: descripción del servicio]',
-	},
-	{
-		titulo: 'Fotografía',
-		descripcion: '[PENDIENTE: descripción del servicio]',
-	},
-	{
-		titulo: 'Postproducción y dirección creativa',
-		descripcion: '[PENDIENTE: descripción del servicio]',
-	},
+	{ titulo: 'Producción audiovisual', descripcion: LOREM },
+	{ titulo: 'Fotografía', descripcion: LOREM },
+	{ titulo: 'Postproducción y dirección creativa', descripcion: LOREM },
 ];
