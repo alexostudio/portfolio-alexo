@@ -1,0 +1,85 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Galeria from '../../components/Galeria.astro';
+import { type Categoria, categorias, fotosDe } from '../../data/categorias';
+import Base from '../../layouts/Base.astro';
+
+// Una página por categoría, generada al compilar desde src/data/categorias.ts
+export const getStaticPaths = (() =>
+	categorias.map((categoria) => ({
+		params: { slug: categoria.slug },
+		props: { categoria },
+	}))) satisfies GetStaticPaths;
+
+interface Props {
+	categoria: Categoria;
+}
+
+const { categoria } = Astro.props;
+const fotos = fotosDe(categoria);
+---
+
+<Base titulo={categoria.titulo} descripcion={`${categoria.titulo}: fotografía y video de ALEXO.`}>
+	<article class="seccion contenedor categoria" aria-labelledby="categoria-titulo">
+		<a href="/proyectos/" class="volver"><span aria-hidden="true">←&nbsp;</span>Todos los proyectos</a>
+
+		<header class="cabecera">
+			<div class="titulo-con-barra">
+				<h1 id="categoria-titulo" class="titulo-pagina">{categoria.titulo}</h1>
+				<span class="barra-alexo" aria-hidden="true"></span>
+			</div>
+			<p class="descripcion">{categoria.descripcion}</p>
+		</header>
+
+		{
+			fotos.length > 0 ? (
+				<Galeria fotos={fotos} />
+			) : (
+				<div class="provisional" style={`background: ${categoria.color}`} />
+			)
+		}
+	</article>
+</Base>
+
+<style>
+	.categoria {
+		display: grid;
+		gap: 2.5rem;
+		padding-top: clamp(1.5rem, 1rem + 2vw, 3rem);
+	}
+
+	.volver {
+		display: inline-flex;
+		align-items: center;
+		justify-self: start;
+		min-height: var(--objetivo-tactil);
+		font-weight: 600;
+		color: var(--color-texto-suave);
+		text-decoration: none;
+	}
+
+	.volver:hover {
+		color: var(--color-texto);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	.cabecera {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.titulo-pagina {
+		font-size: var(--texto-hero);
+	}
+
+	.descripcion {
+		max-width: 60ch;
+		color: var(--color-texto-suave);
+	}
+
+	/* Categoría sin fotos todavía: su color provisional */
+	.provisional {
+		aspect-ratio: 3 / 2;
+	}
+</style>

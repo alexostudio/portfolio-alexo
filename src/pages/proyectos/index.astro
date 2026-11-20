@@ -1,0 +1,27 @@
+---
+import RejillaCategorias from '../../components/RejillaCategorias.astro';
+import Base from '../../layouts/Base.astro';
+---
+
+<Base titulo="Proyectos" descripcion="Proyectos de fotografía y video de ALEXO por categoría.">
+	<section class="seccion contenedor proyectos" aria-labelledby="proyectos-titulo">
+		<div class="titulo-con-barra">
+			<h1 id="proyectos-titulo" class="titulo-pagina">Proyectos</h1>
+			<span class="barra-alexo" aria-hidden="true"></span>
+		</div>
+
+		<RejillaCategorias nivel="h2" />
+	</section>
+</Base>
+
+<style>
+	.proyectos {
+		display: grid;
+		gap: 2.5rem;
+		padding-top: clamp(2rem, 1rem + 4vw, 4rem);
+	}
+
+	.titulo-pagina {
+		font-size: var(--texto-hero);
+	}
+</style>

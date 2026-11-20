@@ -23,3 +23,13 @@ export const COLORES = {
 	indigo: '#3a4f8c',
 	magenta: '#8c3a7a',
 } as const;
+
+/** Elementos cortos de relleno para listas (herramientas, clientes…). */
+export const LOREM_LISTA = [
+	'Lorem ipsum',
+	'Dolor sit',
+	'Amet consectetur',
+	'Adipiscing elit',
+	'Sed eiusmod',
+	'Tempor incididunt',
+] as const;

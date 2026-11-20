@@ -1,0 +1,301 @@
+---
+import { enlaceWhatsApp, sitio } from '../config/sitio';
+import { LOREM } from '../data/provisional';
+import { servicios } from '../data/servicios';
+import Base from '../layouts/Base.astro';
+
+// Con ID de Formspree se envía allí; sin él, el formulario abre el programa de correo.
+// Los nombres name / email / phone / subject / message son campos especiales de Formspree
+// (email = Reply-To, subject = asunto del aviso).
+const accion = sitio.formspree ? `https://formspree.io/f/${sitio.formspree}` : `mailto:${sitio.correo}`;
+const modo = sitio.formspree ? 'formspree' : 'correo';
+const asunto = `Nuevo proyecto desde el sitio de ${sitio.nombre}`;
+const tipos = [...servicios.map((servicio) => servicio.titulo), 'Otro'];
+---
+
+<Base titulo="Contacto" descripcion={`Cuéntale tu proyecto a ${sitio.nombre}: fotografía y video en ${sitio.ubicacion}.`}>
+	<article class="seccion contenedor contacto" aria-labelledby="contacto-titulo">
+		<header class="cabecera">
+			<div class="titulo-con-barra">
+				<h1 id="contacto-titulo" class="titulo-pagina">Contacto</h1>
+				<span class="barra-alexo" aria-hidden="true"></span>
+			</div>
+			<p class="entrada">{LOREM}</p>
+		</header>
+
+		<div class="columnas">
+			<form
+				class="formulario"
+				action={accion}
+				method="post"
+				enctype={modo === 'correo' ? 'text/plain' : undefined}
+				data-formulario
+				data-modo={modo}
+				data-correo={sitio.correo}
+			>
+				<input type="hidden" name="subject" value={asunto} />
+
+				<div class="campo">
+					<label for="nombre">Nombre</label>
+					<input id="nombre" name="name" type="text" autocomplete="name" required />
+				</div>
+
+				<div class="campo">
+					<label for="correo">Correo</label>
+					<input id="correo" name="email" type="email" autocomplete="email" required />
+				</div>
+
+				<div class="campo">
+					<label for="telefono">Teléfono <span class="opcional">(opcional)</span></label>
+					<input id="telefono" name="phone" type="tel" autocomplete="tel" />
+				</div>
+
+				<div class="campo">
+					<label for="tipo">Tipo de proyecto</label>
+					<select id="tipo" name="tipo" required>
+						<option value="">Elige una opción</option>
+						{tipos.map((tipo) => <option>{tipo}</option>)}
+					</select>
+				</div>
+
+				<div class="campo">
+					<label for="mensaje">Mensaje</label>
+					<textarea id="mensaje" name="message" rows="6" required></textarea>
+				</div>
+
+				<button type="submit" class="enviar" data-enviar>Enviar mensaje</button>
+				<p class="estado" role="status" data-estado></p>
+			</form>
+
+			<aside class="directo" aria-labelledby="directo-titulo">
+				<h2 id="directo-titulo" class="titulo-directo">¿Prefieres escribir directo?</h2>
+				<a href={enlaceWhatsApp} class="enlace-accion" target="_blank" rel="noopener noreferrer">
+					Escríbeme por WhatsApp <span aria-hidden="true">→</span>
+					<span class="solo-lector"> (se abre en otra pestaña)</span>
+				</a>
+				<address class="datos">
+					<a href={`mailto:${sitio.correo}`}>{sitio.correo}</a>
+					<a href={`tel:${sitio.telefono.e164}`}>{sitio.telefono.visible}</a>
+					<span>{sitio.ubicacion}</span>
+				</address>
+			</aside>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.contacto {
+		display: grid;
+		gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+		padding-top: clamp(2rem, 1rem + 4vw, 4rem);
+	}
+
+	.cabecera {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.titulo-pagina {
+		font-size: var(--texto-hero);
+	}
+
+	.entrada {
+		max-width: 60ch;
+		color: var(--color-texto-suave);
+	}
+
+	.columnas {
+		display: grid;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.formulario {
+		display: grid;
+		gap: 1.25rem;
+		max-width: 40rem;
+	}
+
+	.campo {
+		display: grid;
+		gap: 0.5rem;
+	}
+
+	label {
+		font-weight: 600;
+	}
+
+	.opcional {
+		font-weight: 400;
+		color: var(--color-texto-tenue);
+	}
+
+	input,
+	select,
+	textarea {
+		width: 100%;
+		min-height: var(--objetivo-tactil);
+		padding: 0.625rem 0.875rem;
+		border: 1px solid var(--color-linea);
+		border-radius: 0;
+		background: var(--color-superficie);
+		color: var(--color-texto);
+		font: inherit;
+	}
+
+	/* Misma altura para campos de una línea y el desplegable (este ignora el interlineado) */
+	input,
+	select {
+		height: calc(1.6em + 1.25rem + 2px);
+	}
+
+	textarea {
+		resize: vertical;
+	}
+
+	input:hover,
+	select:hover,
+	textarea:hover {
+		border-color: var(--color-texto-tenue);
+	}
+
+	/* Error solo después de que la persona haya tocado el campo */
+	input:user-invalid,
+	select:user-invalid,
+	textarea:user-invalid {
+		border-color: var(--color-error);
+	}
+
+	.enviar {
+		position: relative;
+		justify-self: start;
+		min-height: var(--objetivo-tactil);
+		padding: 0.75rem 1.75rem;
+		border: 1px solid var(--color-texto);
+		background: transparent;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	/* Acento arcoíris al pasar o enfocar, como el resto de llamadas a la acción */
+	.enviar::after {
+		content: '';
+		position: absolute;
+		left: -1px;
+		right: -1px;
+		bottom: -1px;
+		height: var(--alto-barra);
+		background: var(--gradiente-alexo);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.3s ease;
+	}
+
+	.enviar:hover::after,
+	.enviar:focus-visible::after {
+		transform: scaleX(1);
+	}
+
+	.enviar:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+
+	.estado:empty {
+		display: none;
+	}
+
+	.estado[data-tipo='error'] {
+		color: var(--color-error);
+	}
+
+	.directo {
+		display: grid;
+		gap: 1rem;
+		justify-items: start;
+		align-content: start;
+	}
+
+	.titulo-directo {
+		font-size: var(--texto-tarjeta);
+	}
+
+	.datos {
+		display: grid;
+		font-style: normal;
+		color: var(--color-texto-suave);
+	}
+
+	.datos a {
+		display: inline-flex;
+		align-items: center;
+		min-height: var(--objetivo-tactil);
+		overflow-wrap: anywhere;
+	}
+
+	@media (min-width: 56rem) {
+		.columnas {
+			grid-template-columns: 3fr 2fr;
+			gap: clamp(3rem, 1rem + 4vw, 6rem);
+		}
+	}
+</style>
+
+<script>
+	const formulario = document.querySelector<HTMLFormElement>('[data-formulario]');
+
+	if (formulario) {
+		const estado = formulario.querySelector<HTMLElement>('[data-estado]')!;
+		const enviar = formulario.querySelector<HTMLButtonElement>('[data-enviar]')!;
+
+		const avisar = (texto: string, tipo: 'ok' | 'error') => {
+			estado.textContent = texto;
+			estado.dataset.tipo = tipo;
+		};
+
+		formulario.addEventListener('submit', async (evento) => {
+			// El navegador ya validó los campos obligatorios antes de llegar aquí.
+			evento.preventDefault();
+			const datos = new FormData(formulario);
+
+			if (formulario.dataset.modo === 'correo') {
+				// Sin Formspree: se arma el correo y se abre el programa de correo de la persona.
+				const valor = (campo: string) => String(datos.get(campo) ?? '').trim();
+				const cuerpo = [
+					`Nombre: ${valor('name')}`,
+					`Correo: ${valor('email')}`,
+					...(valor('phone') ? [`Teléfono: ${valor('phone')}`] : []),
+					`Tipo de proyecto: ${valor('tipo')}`,
+					'',
+					valor('message'),
+				].join('\n');
+				const asunto = encodeURIComponent(valor('subject'));
+				window.location.href = `mailto:${formulario.dataset.correo}?subject=${asunto}&body=${encodeURIComponent(cuerpo)}`;
+				avisar('Se abrió tu programa de correo con el mensaje listo: solo falta enviarlo.', 'ok');
+				return;
+			}
+
+			enviar.disabled = true;
+			avisar('Enviando…', 'ok');
+			try {
+				const respuesta = await fetch(formulario.action, {
+					method: 'POST',
+					body: datos,
+					headers: { Accept: 'application/json' },
+				});
+				// Formspree responde { next } si salió bien y { error, errors[] } (en inglés) si no.
+				const cuerpo = await respuesta.json().catch(() => ({}));
+				if (respuesta.ok && !cuerpo.errors && !cuerpo.error) {
+					formulario.reset();
+					avisar('¡Gracias! Tu mensaje llegó. Te respondo lo antes posible.', 'ok');
+				} else {
+					avisar('No se pudo enviar. Revisa los datos e inténtalo de nuevo, o escríbeme por WhatsApp.', 'error');
+				}
+			} catch {
+				avisar('No hay conexión y el mensaje no se envió. Inténtalo de nuevo o escríbeme por WhatsApp.', 'error');
+			} finally {
+				enviar.disabled = false;
+			}
+		});
+	}
+</script>

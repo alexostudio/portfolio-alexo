@@ -13,6 +13,9 @@ export const sitio = {
 	},
 	// [PENDIENTE: página del aviso de privacidad]. Mientras sea null, el pie no lo enlaza.
 	avisoPrivacidad: null as string | null,
+	// [PENDIENTE: ID del formulario de Formspree, p. ej. 'xyzabcde' de https://formspree.io/f/xyzabcde].
+	// Mientras sea null, el formulario de /contacto abre el programa de correo (mailto:).
+	formspree: null as string | null,
 } as const;
 
 export const enlaceWhatsApp = `https://wa.me/${sitio.telefono.e164.replace('+', '')}`;
@@ -22,11 +25,11 @@ export interface EnlaceMenu {
 	href: string;
 }
 
-// Anclas a secciones de la portada; cuando existan páginas propias, cambia el href aquí.
+// Páginas del menú principal.
 export const menu: EnlaceMenu[] = [
-	{ texto: 'Proyectos', href: '/#proyectos' },
-	{ texto: 'Sobre', href: '/#sobre' },
-	{ texto: 'Contacto', href: '/#contacto' },
+	{ texto: 'Proyectos', href: '/proyectos/' },
+	{ texto: 'Sobre', href: '/sobre/' },
+	{ texto: 'Contacto', href: '/contacto/' },
 ];
 
 export interface Red {

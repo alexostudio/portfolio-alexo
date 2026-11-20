@@ -32,7 +32,7 @@ import { sitio } from '../config/sitio';
 		</div>
 
 		<div class="base">
-			<a href="/#proyectos" class="explorar">
+			<a href="/#proyectos" class="enlace-accion">
 				Explorar Proyectos <span aria-hidden="true">→</span>
 			</a>
 
@@ -132,33 +132,6 @@ import { sitio } from '../config/sitio';
 		gap: 1.5rem;
 	}
 
-	.explorar {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		min-height: var(--objetivo-tactil);
-		font-weight: 600;
-		text-decoration: none;
-	}
-
-	.explorar::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0.4rem;
-		height: 2px;
-		background: var(--gradiente-alexo);
-		transform: scaleX(0.35);
-		transform-origin: left;
-		transition: transform 0.3s ease;
-	}
-
-	.explorar:hover::after,
-	.explorar:focus-visible::after {
-		transform: scaleX(1);
-	}
 
 	.datos {
 		display: grid;

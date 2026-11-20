@@ -1,5 +1,8 @@
 ---
-// Textos de references/estructura.md (aprobados por ALEXO).
+// Los dos primeros párrafos de la bio (aprobados por ALEXO), desde src/data/sobre.ts.
+import { sobre } from '../data/sobre';
+
+const [entrada, presentacion] = sobre.bio;
 ---
 
 <section id="sobre" class="seccion contenedor sobre" aria-labelledby="sobre-titulo">
@@ -7,13 +10,9 @@
 		<h2 id="sobre-titulo" class="titulo-seccion">Sobre ALEXO</h2>
 		<span class="barra-alexo" aria-hidden="true"></span>
 	</div>
-	<p class="entrada">
-		ALEXO es mi espacio creativo dedicado a la fotografía, el cine y la exploración visual.
-	</p>
-	<p>
-		Soy fotógrafo y filmmaker con más de cuatro años de experiencia creando contenido para
-		marcas, espacios, personas y proyectos que buscan comunicar algo más.
-	</p>
+	<p class="entrada">{entrada}</p>
+	<p>{presentacion}</p>
+	<a href="/sobre/" class="enlace-accion">Conocer más <span aria-hidden="true">→</span></a>
 </section>
 
 <style>
