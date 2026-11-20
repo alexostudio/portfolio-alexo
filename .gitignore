@@ -33,6 +33,7 @@ pnpm-debug.log*
 ### Configuracion de agentes de IA (skills, reglas): NO se versiona ###
 /.cursor/
 /.claude/
+/AGENTS.md
 
 ### Metadatos de Windows al copiar archivos desde WSL ###
 *:Zone.Identifier
