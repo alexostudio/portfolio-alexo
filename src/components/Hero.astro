@@ -1,7 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import poster from '../assets/hero/poster.jpg';
-import { sitio } from '../config/sitio';
+import { enlaceWhatsApp, sitio } from '../config/sitio';
 ---
 
 <section class="hero" aria-labelledby="hero-titulo" data-hero>
@@ -27,20 +27,18 @@ import { sitio } from '../config/sitio';
 
 	<div class="contenedor contenido">
 		<div class="textos">
-			<h1 id="hero-titulo">Film &amp; Photography.</h1>
+			<h1 id="hero-titulo">Ideas que se convierten en imágenes</h1>
 			<p class="subtitulo">{sitio.descripcion}</p>
 		</div>
 
 		<div class="base">
-			<a href="/#proyectos" class="enlace-accion">
-				Explorar Proyectos <span aria-hidden="true">→</span>
-			</a>
-
-			<address class="datos">
-				<span>{sitio.ubicacion}</span>
-				<a href={`mailto:${sitio.correo}`}>{sitio.correo}</a>
-				<a href={`tel:${sitio.telefono.e164}`}>{sitio.telefono.visible}</a>
-			</address>
+			<div class="acciones">
+				<a href="/proyectos/" class="boton">Explorar proyectos</a>
+				<a href={enlaceWhatsApp} class="enlace-accion" target="_blank" rel="noopener noreferrer">
+					Hablemos de tu proyecto <span aria-hidden="true">→</span>
+					<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
+				</a>
+			</div>
 
 			<button type="button" class="pausa" aria-label="Pausar video" hidden data-pausa>
 				<span class="icono-pausa" aria-hidden="true"></span>
@@ -85,16 +83,38 @@ import { sitio } from '../config/sitio';
 		opacity: 1;
 	}
 
-	/* Oscurece arriba (encabezado) y abajo (datos) para que el texto blanco se lea */
+	/*
+	 * Velo para que el texto se lea sobre cualquier fotograma (contraste ≥ 3:1 medido en el clip).
+	 * Celular: el texto ocupa todo el ancho, así que oscurece de arriba abajo.
+	 * Escritorio: además oscurece la izquierda, donde está el texto, y deja la derecha más viva.
+	 */
 	.velo {
-		background:
-			linear-gradient(
-				to bottom,
-				rgb(0 0 0 / 0.6) 0%,
-				rgb(0 0 0 / 0.25) 30%,
-				rgb(0 0 0 / 0.3) 60%,
-				rgb(0 0 0 / 0.8) 100%
-			);
+		background: linear-gradient(
+			to bottom,
+			rgb(0 0 0 / 0.6) 0%,
+			rgb(0 0 0 / 0.5) 30%,
+			rgb(0 0 0 / 0.55) 60%,
+			rgb(0 0 0 / 0.85) 100%
+		);
+	}
+
+	@media (min-width: 48rem) {
+		.velo {
+			background:
+				linear-gradient(
+					to right,
+					rgb(0 0 0 / 0.6) 0%,
+					rgb(0 0 0 / 0.45) 50%,
+					rgb(0 0 0 / 0) 85%
+				),
+				linear-gradient(
+					to bottom,
+					rgb(0 0 0 / 0.5) 0%,
+					rgb(0 0 0 / 0.15) 30%,
+					rgb(0 0 0 / 0.2) 60%,
+					rgb(0 0 0 / 0.8) 100%
+				);
+		}
 	}
 
 	/* Contenido */
@@ -132,33 +152,15 @@ import { sitio } from '../config/sitio';
 		gap: 1.5rem;
 	}
 
-
-	.datos {
-		display: grid;
-		font-style: normal;
-		font-size: var(--texto-pequeno);
-		color: var(--color-texto-suave);
-	}
-
-	.datos a {
-		display: inline-flex;
+	.acciones {
+		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		min-height: var(--objetivo-tactil);
-		text-decoration: none;
-		overflow-wrap: anywhere;
+		gap: 0.75rem 2rem;
 	}
 
-	.datos a:hover {
-		text-decoration: underline;
-		text-underline-offset: 4px;
-	}
-
-	@media (min-width: 48rem) {
-		.datos {
-			margin-left: auto;
-			text-align: right;
-			justify-items: end;
-		}
+	.pausa {
+		margin-left: auto;
 	}
 
 	/* Botón de pausa (WCAG 2.2.2: movimiento de más de 5 s necesita poder detenerse) */

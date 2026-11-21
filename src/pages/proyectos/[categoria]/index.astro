@@ -1,25 +1,33 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import Galeria from '../../components/Galeria.astro';
-import { type Categoria, categorias, fotosDe } from '../../data/categorias';
-import Base from '../../layouts/Base.astro';
+import RejillaTarjetas from '../../../components/RejillaTarjetas.astro';
+import {
+	type Categoria,
+	CON_PAGINA_PROPIA,
+	categoriasPublicadas,
+	tarjetasDeProyectos,
+} from '../../../data/categorias';
+import Base from '../../../layouts/Base.astro';
 
-// Una página por categoría, generada al compilar desde src/data/categorias.ts
+// Una página por categoría publicada; muestra sus proyectos (6.5).
+// Las que tienen página propia (p. ej. la landing de Bienes Raíces, 6.6) se saltan aquí.
 export const getStaticPaths = (() =>
-	categorias.map((categoria) => ({
-		params: { slug: categoria.slug },
-		props: { categoria },
-	}))) satisfies GetStaticPaths;
+	categoriasPublicadas
+		.filter((categoria) => !CON_PAGINA_PROPIA.includes(categoria.slug))
+		.map((categoria) => ({
+			params: { categoria: categoria.slug },
+			props: { categoria },
+		}))) satisfies GetStaticPaths;
 
 interface Props {
 	categoria: Categoria;
 }
 
 const { categoria } = Astro.props;
-const fotos = fotosDe(categoria);
+const tarjetas = tarjetasDeProyectos(categoria);
 ---
 
-<Base titulo={categoria.titulo} descripcion={`${categoria.titulo}: fotografía y video de ALEXO.`}>
+<Base titulo={categoria.titulo} descripcion={`${categoria.titulo}: proyectos de fotografía y video de ALEXO.`}>
 	<article class="seccion contenedor categoria" aria-labelledby="categoria-titulo">
 		<a href="/proyectos/" class="volver"><span aria-hidden="true">←&nbsp;</span>Todos los proyectos</a>
 
@@ -32,8 +40,8 @@ const fotos = fotosDe(categoria);
 		</header>
 
 		{
-			fotos.length > 0 ? (
-				<Galeria fotos={fotos} />
+			tarjetas.length > 0 ? (
+				<RejillaTarjetas tarjetas={tarjetas} nivel="h2" />
 			) : (
 				<div class="provisional" style={`background: ${categoria.color}`} />
 			)
@@ -78,7 +86,7 @@ const fotos = fotosDe(categoria);
 		color: var(--color-texto-suave);
 	}
 
-	/* Categoría sin fotos todavía: su color provisional */
+	/* Categoría sin proyectos todavía: su color provisional */
 	.provisional {
 		aspect-ratio: 3 / 2;
 	}

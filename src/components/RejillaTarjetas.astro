@@ -1,18 +1,24 @@
 ---
+// Rejilla de tarjetas con foto (categorías en la portada y /proyectos; proyectos en cada categoría).
 import { Image } from 'astro:assets';
-import { categorias, portadaDe, rutaDe } from '../data/categorias';
+import type { Foto } from '../data/categorias';
+
+export interface Tarjeta {
+	titulo: string;
+	descripcion: string;
+	href: string;
+	/** null = se pinta `color` (contenido provisional). */
+	portada: Foto | null;
+	color: string;
+}
 
 interface Props {
+	tarjetas: Tarjeta[];
 	/** Nivel del título de cada tarjeta, para respetar la jerarquía de la página. */
 	nivel?: 'h2' | 'h3';
 }
 
-const { nivel: Titulo = 'h3' } = Astro.props;
-const tarjetas = categorias.map((categoria) => ({
-	...categoria,
-	href: rutaDe(categoria),
-	portada: portadaDe(categoria),
-}));
+const { tarjetas, nivel: Titulo = 'h3' } = Astro.props;
 ---
 
 <ul class="rejilla">

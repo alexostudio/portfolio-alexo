@@ -1,5 +1,6 @@
 ---
-import RejillaCategorias from './RejillaCategorias.astro';
+import { tarjetasDeCategorias } from '../data/categorias';
+import RejillaTarjetas from './RejillaTarjetas.astro';
 ---
 
 <section id="proyectos" class="seccion contenedor proyectos" aria-labelledby="proyectos-titulo">
@@ -8,7 +9,7 @@ import RejillaCategorias from './RejillaCategorias.astro';
 		<span class="barra-alexo" aria-hidden="true"></span>
 	</div>
 
-	<RejillaCategorias nivel="h3" />
+	<RejillaTarjetas tarjetas={tarjetasDeCategorias()} nivel="h3" />
 </section>
 
 <style>

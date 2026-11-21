@@ -1,5 +1,6 @@
 ---
-import { servicios } from '../data/servicios';
+import { Image } from 'astro:assets';
+import { cotizarServicio, servicios } from '../data/servicios';
 ---
 
 <section class="seccion contenedor servicios" aria-labelledby="servicios-titulo">
@@ -12,8 +13,31 @@ import { servicios } from '../data/servicios';
 		{
 			servicios.map((servicio) => (
 				<li class="tarjeta">
-					<h3>{servicio.titulo}</h3>
-					<p>{servicio.descripcion}</p>
+					<div class="medio">
+						{servicio.imagen ? (
+							<Image
+								src={servicio.imagen}
+								alt=""
+								widths={[400, 640, 960, 1280]}
+								sizes="(min-width: 64rem) 31vw, 100vw"
+							/>
+						) : (
+							<div class="provisional" style={`background: ${servicio.color}`} />
+						)}
+					</div>
+					<div class="info">
+						<h3>{servicio.titulo}</h3>
+						{/* Oculto hasta pasar el ratón o enfocar con teclado, solo donde hay ratón */}
+						<div class="detalle">
+							<div class="detalle-interior">
+								<p>{servicio.descripcion}</p>
+								<a href={cotizarServicio(servicio)} class="enlace-accion">
+									Cotizar este servicio<span class="solo-lector">: {servicio.titulo}</span>
+									<span aria-hidden="true">→</span>
+								</a>
+							</div>
+						</div>
+					</div>
 				</li>
 			))
 		}
@@ -26,29 +50,127 @@ import { servicios } from '../data/servicios';
 		gap: 2.5rem;
 	}
 
-	/* Tantas columnas como quepan (3 en escritorio, 1 en celular) */
 	.lista {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-		gap: 1.25rem;
+		gap: 2.5rem;
 		padding: 0;
 		list-style: none;
 	}
 
+	/* Celular y tableta: imagen arriba, texto debajo, todo visible */
 	.tarjeta {
 		display: grid;
+		gap: 1.25rem;
 		align-content: start;
-		gap: 1rem;
-		padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
-		background: var(--color-superficie);
-		border: 1px solid var(--color-linea);
+	}
+
+	.medio {
+		position: relative;
+		aspect-ratio: 3 / 2;
+		overflow: hidden;
+	}
+
+	.medio :global(img),
+	.provisional {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.info {
+		display: grid;
+		gap: 0.75rem;
 	}
 
 	h3 {
 		font-size: var(--texto-tarjeta);
 	}
 
-	p {
+	.detalle-interior {
+		display: grid;
+		gap: 0.75rem;
+		justify-items: start;
+	}
+
+	.detalle p {
 		color: var(--color-texto-suave);
+	}
+
+	/* Escritorio: tres tarjetas verticales con el texto sobre la imagen */
+	@media (min-width: 64rem) {
+		.lista {
+			grid-template-columns: repeat(3, 1fr);
+			gap: 1.25rem;
+		}
+
+		.tarjeta {
+			position: relative;
+			display: block;
+		}
+
+		.medio {
+			aspect-ratio: 4 / 5;
+		}
+
+		/* Velo extra que aparece al pasar el ratón */
+		.medio::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: rgb(0 0 0 / 0.45);
+			opacity: 0;
+			transition: opacity 0.4s ease;
+		}
+
+		.info {
+			position: absolute;
+			inset: auto 0 0;
+			padding: clamp(1.25rem, 0.5rem + 1.2vw, 2rem);
+			background: linear-gradient(to top, rgb(0 0 0 / 0.9), rgb(0 0 0 / 0.6) 60%, rgb(0 0 0 / 0));
+		}
+
+		.tarjeta:hover .medio::after,
+		.tarjeta:focus-within .medio::after {
+			opacity: 1;
+		}
+	}
+
+	/* Solo con ratón: la descripción y el enlace se despliegan al pasar o al enfocar */
+	@media (min-width: 64rem) and (hover: hover) and (pointer: fine) {
+		.detalle {
+			display: grid;
+			grid-template-rows: 0fr;
+			opacity: 0;
+			transition:
+				grid-template-rows 0.4s ease,
+				opacity 0.4s ease;
+		}
+
+		.detalle-interior {
+			min-height: 0;
+			overflow: hidden;
+		}
+
+		.tarjeta:hover .detalle,
+		.tarjeta:focus-within .detalle {
+			grid-template-rows: 1fr;
+			opacity: 1;
+		}
+
+		/* Con el foco dentro ya está desplegado: sin recorte, para que se vea el contorno de foco */
+		.tarjeta:focus-within .detalle-interior {
+			overflow: visible;
+		}
+	}
+
+	@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+		.medio :global(img) {
+			transition: transform 0.5s ease;
+		}
+
+		.tarjeta:hover .medio :global(img),
+		.tarjeta:focus-within .medio :global(img) {
+			transform: scale(1.05);
+		}
 	}
 </style>

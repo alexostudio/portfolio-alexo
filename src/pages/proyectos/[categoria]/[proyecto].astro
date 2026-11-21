@@ -1,0 +1,144 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Galeria from '../../../components/Galeria.astro';
+import {
+	type Categoria,
+	categoriasPublicadas,
+	fotosDe,
+	type Proyecto,
+	rutaDe,
+} from '../../../data/categorias';
+import Base from '../../../layouts/Base.astro';
+
+// Una página por proyecto de cada categoría publicada (6.5). Plantilla común: los datos
+// opcionales (cliente, ubicación, entregables) solo aparecen si el proyecto los tiene.
+export const getStaticPaths = (() =>
+	categoriasPublicadas.flatMap((categoria) =>
+		categoria.proyectos.map((proyecto) => ({
+			params: { categoria: categoria.slug, proyecto: proyecto.slug },
+			props: { categoria, proyecto },
+		})),
+	)) satisfies GetStaticPaths;
+
+interface Props {
+	categoria: Categoria;
+	proyecto: Proyecto;
+}
+
+const { categoria, proyecto } = Astro.props;
+const fotos = fotosDe(categoria, proyecto);
+const datos = [
+	{ etiqueta: 'Cliente', valor: proyecto.cliente },
+	{ etiqueta: 'Ubicación', valor: proyecto.ubicacion },
+].filter((dato): dato is { etiqueta: string; valor: string } => Boolean(dato.valor));
+---
+
+<Base
+	titulo={`${proyecto.titulo} · ${categoria.titulo}`}
+	descripcion={`${proyecto.titulo}: ${categoria.titulo.toLowerCase()} por ALEXO.`}
+>
+	<article class="seccion contenedor proyecto" aria-labelledby="proyecto-titulo">
+		<a href={rutaDe(categoria)} class="volver"
+			><span aria-hidden="true">←&nbsp;</span>{categoria.titulo}</a
+		>
+
+		<header class="cabecera">
+			<div class="titulo-con-barra">
+				<h1 id="proyecto-titulo" class="titulo-pagina">{proyecto.titulo}</h1>
+				<span class="barra-alexo" aria-hidden="true"></span>
+			</div>
+
+			{
+				datos.length > 0 && (
+					<dl class="datos">
+						{datos.map((dato) => (
+							<div>
+								<dt>{dato.etiqueta}</dt>
+								<dd>{dato.valor}</dd>
+							</div>
+						))}
+					</dl>
+				)
+			}
+
+			<p class="descripcion">{proyecto.descripcion}</p>
+
+			{
+				proyecto.entregables && proyecto.entregables.length > 0 && (
+					<section class="entregables" aria-labelledby="entregables-titulo">
+						<h2 id="entregables-titulo" class="titulo-bloque">Entregables</h2>
+						<ul>
+							{proyecto.entregables.map((entregable) => (
+								<li>{entregable}</li>
+							))}
+						</ul>
+					</section>
+				)
+			}
+		</header>
+
+		{fotos.length > 0 && <Galeria fotos={fotos} />}
+	</article>
+</Base>
+
+<style>
+	.proyecto {
+		display: grid;
+		gap: 2.5rem;
+		padding-top: clamp(1.5rem, 1rem + 2vw, 3rem);
+	}
+
+	.volver {
+		display: inline-flex;
+		align-items: center;
+		justify-self: start;
+		min-height: var(--objetivo-tactil);
+		font-weight: 600;
+		color: var(--color-texto-suave);
+		text-decoration: none;
+	}
+
+	.volver:hover {
+		color: var(--color-texto);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	.cabecera {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.titulo-pagina {
+		font-size: var(--texto-hero);
+	}
+
+	.datos {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 2.5rem;
+	}
+
+	dt {
+		font-size: var(--texto-pequeno);
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-texto-tenue);
+	}
+
+	.descripcion {
+		max-width: 60ch;
+		color: var(--color-texto-suave);
+	}
+
+	.titulo-bloque {
+		margin-bottom: 0.5rem;
+		font-size: var(--texto-base);
+	}
+
+	.entregables ul {
+		padding-left: 1.25rem;
+		color: var(--color-texto-suave);
+	}
+</style>

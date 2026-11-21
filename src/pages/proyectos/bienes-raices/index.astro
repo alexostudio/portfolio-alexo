@@ -1,0 +1,277 @@
+---
+// Landing de Bienes Raíces (6.6): sustituye a la página genérica de esta categoría.
+// Orden de secciones del documento de ajustes, punto 6.
+import { Picture } from 'astro:assets';
+import RejillaTarjetas from '../../../components/RejillaTarjetas.astro';
+import { whatsAppConMensaje } from '../../../config/sitio';
+import { bienesRaices as texto } from '../../../data/bienes-raices';
+import { categorias, portadaDe, tarjetasDeProyectos } from '../../../data/categorias';
+import Base from '../../../layouts/Base.astro';
+
+const categoria = categorias.find((c) => c.slug === 'bienes-raices')!;
+// [PENDIENTE: video corto inmobiliario en bucle]. Mientras tanto, la portada de la categoría.
+const fondo = portadaDe(categoria);
+const propiedades = tarjetasDeProyectos(categoria);
+const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
+---
+
+<Base titulo={categoria.titulo} descripcion={texto.descripcion} encabezadoSuperpuesto>
+	<section class="portada" aria-labelledby="br-titulo">
+		<div class="fondo" aria-hidden="true">
+			{
+				fondo && (
+					<Picture
+						src={fondo.imagen}
+						alt=""
+						formats={['avif', 'webp']}
+						widths={[640, 960, 1280, 1920]}
+						sizes="100vw"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				)
+			}
+			<div class="velo"></div>
+		</div>
+
+		<div class="contenedor contenido">
+			<p class="antetitulo">{categoria.titulo}</p>
+			<h1 id="br-titulo">{texto.titular}</h1>
+			<p class="descripcion">{texto.descripcion}</p>
+			<div class="acciones">
+				<a href={cotizar} class="boton" target="_blank" rel="noopener noreferrer">
+					{texto.cierre.boton}<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
+				</a>
+				<a href="#propiedades" class="enlace-accion">Ver propiedades <span aria-hidden="true">↓</span></a>
+			</div>
+		</div>
+	</section>
+
+	<section class="seccion contenedor propuesta" aria-labelledby="br-propuesta">
+		<h2 id="br-propuesta" class="titulo-seccion">{texto.propuesta.titulo}</h2>
+		<p>{texto.propuesta.texto}</p>
+	</section>
+
+	<section class="seccion contenedor" aria-labelledby="br-servicios">
+		<div class="titulo-con-barra">
+			<h2 id="br-servicios" class="titulo-seccion">Qué hacemos</h2>
+			<span class="barra-alexo" aria-hidden="true"></span>
+		</div>
+		<ul class="columnas servicios">
+			{
+				texto.servicios.map((servicio) => (
+					<li>
+						<h3>{servicio.titulo}</h3>
+						<p>{servicio.texto}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section id="propiedades" class="seccion contenedor" aria-labelledby="br-propiedades">
+		<div class="titulo-con-barra">
+			<h2 id="br-propiedades" class="titulo-seccion">Portafolio de<br class="salto-angosto" /> propiedades</h2>
+			<span class="barra-alexo" aria-hidden="true"></span>
+		</div>
+		{
+			propiedades.length > 0 ? (
+				<RejillaTarjetas tarjetas={propiedades} nivel="h3" />
+			) : (
+				<div class="provisional" style={`background: ${categoria.color}`} />
+			)
+		}
+	</section>
+
+	<section class="seccion contenedor" aria-labelledby="br-beneficios">
+		<div class="titulo-con-barra">
+			<h2 id="br-beneficios" class="titulo-seccion">
+				{texto.beneficios.titulo.inicio}<br class="salto-angosto" /> {texto.beneficios.titulo.fin}
+			</h2>
+			<span class="barra-alexo" aria-hidden="true"></span>
+		</div>
+		<ol class="columnas beneficios">
+			{
+				texto.beneficios.lista.map((beneficio) => (
+					<li>
+						<h3>{beneficio.titulo}</h3>
+						<p>{beneficio.texto}</p>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+
+	<section class="seccion contenedor cierre" aria-labelledby="br-cierre">
+		<h2 id="br-cierre">{texto.cierre.titulo}</h2>
+		<p>{texto.cierre.texto}</p>
+		<a href={cotizar} class="boton" target="_blank" rel="noopener noreferrer">
+			{texto.cierre.boton}<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
+		</a>
+	</section>
+</Base>
+
+<style>
+	/* Portada con foto (luego video) a casi toda la pantalla */
+	.portada {
+		position: relative;
+		display: grid;
+		min-height: 85svh;
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.fondo,
+	.fondo > :global(*) {
+		position: absolute;
+		inset: 0;
+	}
+
+	.fondo {
+		z-index: -1;
+	}
+
+	.fondo :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* Foto muy clara (interior con ventanales): velo fuerte abajo y a la izquierda, donde va el texto */
+	.velo {
+		background: linear-gradient(
+			to bottom,
+			rgb(0 0 0 / 0.6) 0%,
+			rgb(0 0 0 / 0.55) 40%,
+			rgb(0 0 0 / 0.85) 100%
+		);
+	}
+
+	@media (min-width: 48rem) {
+		.velo {
+			background:
+				linear-gradient(to right, rgb(0 0 0 / 0.75) 0%, rgb(0 0 0 / 0.5) 55%, rgb(0 0 0 / 0.1) 90%),
+				linear-gradient(to bottom, rgb(0 0 0 / 0.5) 0%, rgb(0 0 0 / 0.1) 35%, rgb(0 0 0 / 0.75) 100%);
+		}
+	}
+
+	.contenido {
+		display: grid;
+		align-content: end;
+		gap: 1.25rem;
+		padding-block: 7rem 3rem; /* arriba: espacio del encabezado superpuesto */
+	}
+
+	.antetitulo {
+		font-size: var(--texto-pequeno);
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 18ch;
+		font-size: var(--texto-hero);
+	}
+
+	.descripcion {
+		max-width: 46ch;
+		font-size: var(--texto-tarjeta);
+		line-height: 1.35;
+		color: var(--color-texto-suave);
+	}
+
+	.acciones {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 2rem;
+		margin-top: 0.5rem;
+	}
+
+	/* Propuesta de valor: titular y texto en dos columnas */
+	.propuesta {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.propuesta p {
+		max-width: 52ch;
+		font-size: var(--texto-tarjeta);
+		line-height: 1.4;
+		color: var(--color-texto-suave);
+	}
+
+	@media (min-width: 48rem) {
+		.propuesta {
+			grid-template-columns: 1fr 1fr;
+			gap: clamp(2rem, 1rem + 4vw, 6rem);
+		}
+	}
+
+	.seccion:not(.portada, .propuesta, .cierre) {
+		display: grid;
+		gap: 2.5rem;
+	}
+
+	/* Servicios y beneficios: columnas de texto separadas por una línea, sin tarjetas */
+	.columnas {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+		gap: 2rem 1.5rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.columnas li {
+		display: grid;
+		gap: 0.5rem;
+		align-content: start;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--color-linea);
+	}
+
+	.columnas h3 {
+		font-size: var(--texto-tarjeta);
+	}
+
+	.columnas p {
+		color: var(--color-texto-suave);
+	}
+
+	/* Beneficios numerados 01, 02… */
+	.beneficios {
+		counter-reset: beneficio;
+	}
+
+	.beneficios li {
+		counter-increment: beneficio;
+	}
+
+	.beneficios li::before {
+		content: counter(beneficio, decimal-leading-zero);
+		font-size: var(--texto-pequeno);
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		color: var(--color-texto-tenue);
+	}
+
+	.provisional {
+		aspect-ratio: 3 / 2;
+	}
+
+	.cierre {
+		display: grid;
+		justify-items: center;
+		gap: 1.25rem;
+		text-align: center;
+	}
+
+	.cierre h2 {
+		font-size: var(--texto-subtitulo);
+	}
+
+	.cierre p {
+		color: var(--color-texto-suave);
+	}
+</style>

@@ -20,15 +20,19 @@ export const sitio = {
 
 export const enlaceWhatsApp = `https://wa.me/${sitio.telefono.e164.replace('+', '')}`;
 
+/** WhatsApp con un mensaje ya escrito, para que ALEXO sepa de qué viene la conversación. */
+export const whatsAppConMensaje = (mensaje: string) =>
+	`${enlaceWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
 export interface EnlaceMenu {
 	texto: string;
 	href: string;
 }
 
-// Páginas del menú principal.
+// Menú principal: páginas propias o, en el caso de Sobre, la sección de la portada.
 export const menu: EnlaceMenu[] = [
 	{ texto: 'Proyectos', href: '/proyectos/' },
-	{ texto: 'Sobre', href: '/sobre/' },
+	{ texto: 'Sobre', href: '/#sobre' },
 	{ texto: 'Contacto', href: '/contacto/' },
 ];
 

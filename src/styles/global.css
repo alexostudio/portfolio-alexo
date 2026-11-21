@@ -23,12 +23,9 @@
 		#0010ff 100%
 	);
 
-	/* Excepción aprobada: marco de la sección Exploraciones */
-	--gradiente-exploraciones: linear-gradient(135deg, #6e56c9, #e01e3c, #0eb4f2);
-
-	/* Tipografía: --font-display y --font-text las define la API de fuentes de Astro */
-	--fuente-titulos: var(--font-display);
-	--fuente-texto: var(--font-text);
+	/* Tipografía (6.9): Switzer para todo; --font-principal la define la API de fuentes de Astro */
+	--fuente-titulos: var(--font-principal);
+	--fuente-texto: var(--font-principal);
 
 	/* Escala fluida: tamaño de celular a 390 px de ancho → tamaño de escritorio a 1440 px */
 	--texto-hero: clamp(2.125rem, 1.429rem + 2.857vw, 4rem); /* 34 → 64 px */
@@ -41,7 +38,7 @@
 
 	/* Espaciado y medidas */
 	--margen-lateral: clamp(1.25rem, 0.5rem + 3vw, 3.5rem);
-	--espacio-seccion: clamp(4rem, 2.514rem + 6.095vw, 8rem); /* 64 → 128 px entre secciones */
+	--espacio-seccion: clamp(2.4rem, 1.508rem + 3.657vw, 4.8rem); /* 38 → 77 px (6.4: menos espacio vacío) */
 	--ancho-maximo: 90rem;
 	--alto-barra: 4px;
 	--objetivo-tactil: 44px;
@@ -167,6 +164,14 @@ button {
 	width: 100%;
 }
 
+/* Salto de línea solo en pantallas angostas: para títulos con barra que en el celular no caben
+   en una línea (si se parten solos, la caja no se encoge y la barra queda más ancha). */
+@media (min-width: 48rem) {
+	br.salto-angosto {
+		display: none;
+	}
+}
+
 /* Oculto a la vista, pero disponible para lectores de pantalla */
 .solo-lector {
 	position: absolute;
@@ -215,4 +220,45 @@ button {
 .enlace-accion:hover::after,
 .enlace-accion:focus-visible::after {
 	transform: scaleX(1);
+}
+
+/* Botón principal ("Explorar proyectos", "Enviar mensaje"): borde blanco y barra arcoíris al pasar */
+.boton {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: var(--objetivo-tactil);
+	padding: 0.75rem 1.75rem;
+	border: 1px solid var(--color-texto);
+	background: transparent;
+	color: var(--color-texto);
+	font: inherit;
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.boton::after {
+	content: '';
+	position: absolute;
+	left: -1px;
+	right: -1px;
+	bottom: -1px;
+	height: var(--alto-barra);
+	background: var(--gradiente-alexo);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.3s ease;
+}
+
+.boton:hover::after,
+.boton:focus-visible::after {
+	transform: scaleX(1);
+}
+
+.boton:disabled {
+	opacity: 0.6;
+	cursor: progress;
 }

@@ -63,7 +63,7 @@ const tipos = [...servicios.map((servicio) => servicio.titulo), 'Otro'];
 					<textarea id="mensaje" name="message" rows="6" required></textarea>
 				</div>
 
-				<button type="submit" class="enviar" data-enviar>Enviar mensaje</button>
+				<button type="submit" class="boton enviar" data-enviar>Enviar mensaje</button>
 				<p class="estado" role="status" data-estado></p>
 			</form>
 
@@ -167,38 +167,7 @@ const tipos = [...servicios.map((servicio) => servicio.titulo), 'Otro'];
 	}
 
 	.enviar {
-		position: relative;
 		justify-self: start;
-		min-height: var(--objetivo-tactil);
-		padding: 0.75rem 1.75rem;
-		border: 1px solid var(--color-texto);
-		background: transparent;
-		font-weight: 600;
-		cursor: pointer;
-	}
-
-	/* Acento arcoíris al pasar o enfocar, como el resto de llamadas a la acción */
-	.enviar::after {
-		content: '';
-		position: absolute;
-		left: -1px;
-		right: -1px;
-		bottom: -1px;
-		height: var(--alto-barra);
-		background: var(--gradiente-alexo);
-		transform: scaleX(0);
-		transform-origin: left;
-		transition: transform 0.3s ease;
-	}
-
-	.enviar:hover::after,
-	.enviar:focus-visible::after {
-		transform: scaleX(1);
-	}
-
-	.enviar:disabled {
-		opacity: 0.6;
-		cursor: progress;
 	}
 
 	.estado:empty {
@@ -247,6 +216,13 @@ const tipos = [...servicios.map((servicio) => servicio.titulo), 'Otro'];
 	if (formulario) {
 		const estado = formulario.querySelector<HTMLElement>('[data-estado]')!;
 		const enviar = formulario.querySelector<HTMLButtonElement>('[data-enviar]')!;
+
+		// Desde "Cotizar este servicio" (portada): /contacto/?tipo=<servicio> deja ese tipo elegido.
+		const tipoPedido = new URLSearchParams(location.search).get('tipo');
+		const selectorTipo = formulario.querySelector<HTMLSelectElement>('#tipo')!;
+		if (tipoPedido && [...selectorTipo.options].some((opcion) => opcion.value === tipoPedido)) {
+			selectorTipo.value = tipoPedido;
+		}
 
 		const avisar = (texto: string, tipo: 'ok' | 'error') => {
 			estado.textContent = texto;
