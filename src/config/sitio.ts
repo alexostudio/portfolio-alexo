@@ -1,3 +1,5 @@
+import { url } from '../utils/url';
+
 // Datos del sitio centralizados: ningún componente debe repetirlos a mano.
 
 export const sitio = {
@@ -31,9 +33,9 @@ export interface EnlaceMenu {
 
 // Menú principal: páginas propias o, en el caso de Sobre, la sección de la portada.
 export const menu: EnlaceMenu[] = [
-	{ texto: 'Proyectos', href: '/proyectos/' },
-	{ texto: 'Sobre', href: '/#sobre' },
-	{ texto: 'Contacto', href: '/contacto/' },
+	{ texto: 'Proyectos', href: url('/proyectos/') },
+	{ texto: 'Sobre', href: url('/#sobre') },
+	{ texto: 'Contacto', href: url('/contacto/') },
 ];
 
 export interface Red {

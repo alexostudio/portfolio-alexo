@@ -1,4 +1,5 @@
 ---
+import { url } from '../utils/url';
 // Llamada final de la portada (6.8, documento de ajustes punto 8). Los datos de contacto
 // siguen en el pie.
 import { enlaceWhatsApp } from '../config/sitio';
@@ -13,7 +14,7 @@ import { enlaceWhatsApp } from '../config/sitio';
 		<a href={enlaceWhatsApp} class="boton" target="_blank" rel="noopener noreferrer">
 			Hablemos de tu proyecto<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
 		</a>
-		<a href="/proyectos/" class="enlace-accion">Ver proyectos <span aria-hidden="true">→</span></a>
+		<a href={url('/proyectos/')} class="enlace-accion">Ver proyectos <span aria-hidden="true">→</span></a>
 	</div>
 </section>
 

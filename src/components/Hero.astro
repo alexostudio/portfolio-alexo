@@ -1,4 +1,5 @@
 ---
+import { url } from '../utils/url';
 import { Picture } from 'astro:assets';
 import poster from '../assets/hero/poster.jpg';
 import { enlaceWhatsApp, sitio } from '../config/sitio';
@@ -18,9 +19,9 @@ import { enlaceWhatsApp, sitio } from '../config/sitio';
 			class="poster"
 		/>
 		<video class="video" muted loop playsinline preload="none" tabindex="-1" data-video>
-			<source src="/video/hero-720.mp4" type="video/mp4" media="(max-width: 768px)" />
-			<source src="/video/hero.webm" type="video/webm" />
-			<source src="/video/hero.mp4" type="video/mp4" />
+			<source src={url('/video/hero-720.mp4')} type="video/mp4" media="(max-width: 768px)" />
+			<source src={url('/video/hero.webm')} type="video/webm" />
+			<source src={url('/video/hero.mp4')} type="video/mp4" />
 		</video>
 		<div class="velo"></div>
 	</div>
@@ -33,7 +34,7 @@ import { enlaceWhatsApp, sitio } from '../config/sitio';
 
 		<div class="base">
 			<div class="acciones">
-				<a href="/proyectos/" class="boton">Explorar proyectos</a>
+				<a href={url('/proyectos/')} class="boton">Explorar proyectos</a>
 				<a href={enlaceWhatsApp} class="enlace-accion" target="_blank" rel="noopener noreferrer">
 					Hablemos de tu proyecto <span aria-hidden="true">→</span>
 					<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>

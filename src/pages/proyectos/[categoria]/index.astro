@@ -1,4 +1,5 @@
 ---
+import { url } from '../../../utils/url';
 import type { GetStaticPaths } from 'astro';
 import RejillaTarjetas from '../../../components/RejillaTarjetas.astro';
 import {
@@ -29,7 +30,7 @@ const tarjetas = tarjetasDeProyectos(categoria);
 
 <Base titulo={categoria.titulo} descripcion={`${categoria.titulo}: proyectos de fotografía y video de ALEXO.`}>
 	<article class="seccion contenedor categoria" aria-labelledby="categoria-titulo">
-		<a href="/proyectos/" class="volver"><span aria-hidden="true">←&nbsp;</span>Todos los proyectos</a>
+		<a href={url('/proyectos/')} class="volver"><span aria-hidden="true">←&nbsp;</span>Todos los proyectos</a>
 
 		<header class="cabecera">
 			<div class="titulo-con-barra">

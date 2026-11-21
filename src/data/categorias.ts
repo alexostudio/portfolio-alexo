@@ -5,6 +5,7 @@
 // alternativo. Si una foto no tiene proyecto, está en dos o un proyecto nombra una que no existe,
 // la compilación falla y dice qué corregir.
 
+import { url } from '../utils/url';
 import type { ImageMetadata } from 'astro';
 import { COLORES, LOREM, LOREM_TITULO } from './provisional';
 
@@ -253,9 +254,9 @@ export function portadaDe(categoria: Categoria): Foto | null {
 	return primero ? portadaDeProyecto(categoria, primero) : null;
 }
 
-export const rutaDe = (categoria: Categoria) => `/proyectos/${categoria.slug}/`;
+export const rutaDe = (categoria: Categoria) => url(`/proyectos/${categoria.slug}/`);
 export const rutaDeProyecto = (categoria: Categoria, proyecto: Proyecto) =>
-	`/proyectos/${categoria.slug}/${proyecto.slug}/`;
+	url(`/proyectos/${categoria.slug}/${proyecto.slug}/`);
 
 /** Tarjetas de las categorías publicadas (portada y /proyectos). */
 export const tarjetasDeCategorias = () =>

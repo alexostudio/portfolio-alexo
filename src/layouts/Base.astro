@@ -1,4 +1,5 @@
 ---
+import { url } from '../utils/url';
 import { Font } from 'astro:assets';
 import Encabezado from '../components/Encabezado.astro';
 import Pie from '../components/Pie.astro';
@@ -26,8 +27,8 @@ const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : `${sitio.nombre
 		<title>{tituloCompleto}</title>
 		<meta name="description" content={descripcion} />
 		<meta name="theme-color" content="#000000" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+		<link rel="icon" href={url('/favicon.ico')} />
 		<Font cssVariable="--font-principal" preload />
 	</head>
 	<body>

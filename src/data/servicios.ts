@@ -3,6 +3,7 @@
 // Imágenes (6.4): mientras ALEXO no mande fotos pensadas para cada servicio, se reutiliza
 // material del sitio; donde no hay nada representativo, un color provisional.
 
+import { url } from '../utils/url';
 import type { ImageMetadata } from 'astro';
 import poster from '../assets/hero/poster.jpg';
 import guitarrista from '../assets/proyectos/musica-y-conciertos/musica-y-conciertos-02.jpg';
@@ -29,4 +30,4 @@ export const servicios: Servicio[] = [
 
 /** Formulario de contacto con este servicio ya elegido en "Tipo de proyecto". */
 export const cotizarServicio = (servicio: Servicio) =>
-	`/contacto/?tipo=${encodeURIComponent(servicio.titulo)}`;
+	url(`/contacto/?tipo=${encodeURIComponent(servicio.titulo)}`);
