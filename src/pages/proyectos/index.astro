@@ -1,15 +1,16 @@
 ---
 import RejillaTarjetas from '../../components/RejillaTarjetas.astro';
-import { tarjetasDeCategorias } from '../../data/categorias';
+import { entradaProyectos, tarjetasDeCategorias } from '../../data/categorias';
 import Base from '../../layouts/Base.astro';
 ---
 
-<Base titulo="Proyectos" descripcion="Proyectos de fotografía y video de ALEXO por categoría.">
+<Base titulo="Proyectos" descripcion={entradaProyectos}>
 	<section class="seccion contenedor proyectos" aria-labelledby="proyectos-titulo">
 		<div class="titulo-con-barra">
-			<h1 id="proyectos-titulo" class="titulo-pagina">Proyectos</h1>
+			<h1 id="proyectos-titulo" class="titulo-pagina">Proyectos.</h1>
 			<span class="barra-alexo" aria-hidden="true"></span>
 		</div>
+		<p class="entrada">{entradaProyectos}</p>
 
 		<RejillaTarjetas tarjetas={tarjetasDeCategorias()} nivel="h2" />
 	</section>
@@ -20,6 +21,13 @@ import Base from '../../layouts/Base.astro';
 		display: grid;
 		gap: 2.5rem;
 		padding-top: clamp(2rem, 1rem + 4vw, 4rem);
+	}
+
+	/* La entrada va pegada al título, no a la distancia de la rejilla */
+	.entrada {
+		max-width: 52ch;
+		margin-top: -1.25rem;
+		color: var(--color-texto-suave);
 	}
 
 	.titulo-pagina {

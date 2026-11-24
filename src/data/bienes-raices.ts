@@ -1,66 +1,88 @@
 // Textos de la landing de Bienes Raíces (6.6, documento de ajustes punto 6).
-// BORRADOR redactado el 2026-11-20 siguiendo las pautas del documento: presentar la propiedad,
-// destacar sus atributos y fortalecer su promoción, SIN prometer ventas. Pendiente de que el
-// usuario / ALEXO lo revisen. Las propiedades (portafolio) están en src/data/categorias.ts.
+// Fuente: contenidoTexto.md del usuario (2026-11-23), que sustituye al borrador del agente.
+// Las propiedades (portafolio) están en src/data/categorias.ts.
 
 export const bienesRaices = {
-	titular: 'Propiedades que se presentan como merecen',
-	descripcion:
-		'Fotografía, video y contenido para inmobiliarias, desarrolladoras y propietarios que quieren mostrar cada espacio con claridad y carácter.',
-
-	propuesta: {
-		titulo: 'Una presentación visual a la altura de cada propiedad',
-		texto:
-			'Una propiedad se recorre primero en pantalla. Producimos imágenes que muestran sus espacios, su luz y sus mejores atributos con fidelidad, para que su promoción cuente con material sólido desde el primer anuncio.',
+	inicio: {
+		antetitulo: 'ALEXO / Real Estate',
+		titular: 'Haz que cada propiedad destaque.',
+		descripcion:
+			'Fotografía y producción audiovisual para presentar espacios, comunicar su valor y fortalecer su promoción comercial.',
+		// "Explorar proyectos" baja al portafolio de esta misma página (decisión 2026-11-23).
+		principal: 'Explorar proyectos',
+		secundario: 'Solicitar cotización',
 	},
 
-	servicios: [
-		{
-			titulo: 'Fotografía',
-			texto:
-				'Interiores, exteriores y detalles, con luz cuidada y encuadres que respetan las proporciones de cada espacio.',
-		},
-		{
-			titulo: 'Video',
-			texto: 'Recorridos y piezas cinematográficas que transmiten cómo se vive la propiedad.',
-		},
-		{
-			titulo: 'Contenido para redes',
-			texto: 'Formatos verticales y piezas cortas pensadas para publicaciones y anuncios en redes sociales.',
-		},
-		{
-			titulo: 'Campañas audiovisuales',
-			texto: 'Concepto y producción para el lanzamiento o la promoción de un desarrollo completo.',
-		},
-	],
+	propuesta: {
+		titulo: 'La imagen también forma parte de la estrategia.',
+		parrafos: [
+			'Una propiedad no solo necesita mostrarse. Necesita comunicar su potencial.',
+			'Desarrollamos fotografía y contenido audiovisual que resaltan los atributos de cada espacio y fortalecen su presentación en portales inmobiliarios, redes sociales y materiales comerciales.',
+		],
+	},
 
-	beneficios: {
-		// Partido en dos para el salto en pantallas angostas (título con barra).
-		titulo: { inicio: 'Por qué cuidar la', fin: 'presentación visual' },
+	servicios: {
+		// Títulos con barra en líneas: en el celular se parten aquí (br.salto-angosto).
+		titulo: ['Soluciones visuales', 'para el sector', 'inmobiliario.'],
 		lista: [
 			{
-				titulo: 'Anuncios que destacan',
-				texto: 'Las primeras imágenes deciden si alguien se detiene en una publicación.',
+				titulo: 'Fotografía inmobiliaria',
+				texto:
+					'Imágenes que destacan la arquitectura, amplitud, iluminación y detalles de cada propiedad.',
 			},
 			{
-				titulo: 'Atributos claros',
-				texto: 'La amplitud, la luz y los acabados se entienden de un vistazo.',
+				titulo: 'Video inmobiliario',
+				texto:
+					'Recorridos y producciones audiovisuales que presentan los espacios de forma dinámica y cinematográfica.',
 			},
 			{
-				titulo: 'Material para todos los canales',
-				texto: 'Portales, redes, presentaciones y campañas con una imagen coherente.',
+				titulo: 'Contenido para redes sociales',
+				texto:
+					'Piezas visuales adaptadas a formatos digitales para dar visibilidad a propiedades y desarrollos.',
 			},
 			{
-				titulo: 'Una imagen profesional',
-				texto: 'Cada propiedad bien presentada refuerza la confianza en quien la ofrece.',
+				titulo: 'Campañas audiovisuales',
+				texto:
+					'Desarrollo de conceptos y materiales visuales para la comunicación y promoción de proyectos inmobiliarios.',
 			},
 		],
 	},
 
+	beneficios: {
+		titulo: 'Cada detalle cuenta.',
+		lista: [
+			{
+				titulo: 'Captar atención',
+				texto: 'Imágenes que destacan entre múltiples opciones inmobiliarias.',
+			},
+			{
+				titulo: 'Mostrar el potencial',
+				texto: 'Presentar distribución, amplitud y características de cada espacio.',
+			},
+			{
+				titulo: 'Fortalecer la percepción',
+				texto: 'Una presentación visual cuidada y coherente con el inmueble.',
+			},
+			{
+				titulo: 'Multiplicar formatos',
+				texto: 'Material para portales, redes sociales y campañas digitales.',
+			},
+		],
+	},
+
+	portafolio: {
+		titulo: ['Espacios', 'seleccionados.'],
+		entrada:
+			'Una selección de proyectos inmobiliarios desarrollados desde la fotografía y la producción audiovisual.',
+	},
+
 	cierre: {
-		titulo: '¿Tienes una propiedad que presentar?',
-		texto: 'Cuéntanos sobre el espacio y te enviamos una propuesta.',
-		boton: 'Solicitar cotización',
+		titulo: 'Tu propiedad merece destacar.',
+		texto: 'Cuéntanos sobre tu proyecto y desarrollemos una propuesta visual a su medida.',
+		principal: 'Solicitar cotización',
+		secundario: 'Ver proyectos',
 		mensajeWhatsApp: 'Hola, me interesa cotizar contenido para una propiedad.',
+		// Firma pequeña bajo el cierre (decisión 2026-11-23).
+		firma: 'Fotografía · Video · Contenido comercial',
 	},
 };

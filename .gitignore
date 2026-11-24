@@ -29,6 +29,7 @@ pnpm-debug.log*
 /ESTUDIO.md
 /FICHA.md
 /prompt-*.md
+/contenidoTexto.md
 
 ### Configuracion de agentes de IA (skills, reglas): NO se versiona ###
 /.cursor/

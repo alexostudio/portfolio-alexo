@@ -2,11 +2,13 @@
 // Landing de Bienes Raíces (6.6): sustituye a la página genérica de esta categoría.
 // Orden de secciones del documento de ajustes, punto 6.
 import { Picture } from 'astro:assets';
+import Lineas from '../../../components/Lineas.astro';
 import RejillaTarjetas from '../../../components/RejillaTarjetas.astro';
 import { whatsAppConMensaje } from '../../../config/sitio';
 import { bienesRaices as texto } from '../../../data/bienes-raices';
 import { categorias, portadaDe, tarjetasDeProyectos } from '../../../data/categorias';
 import Base from '../../../layouts/Base.astro';
+import { url } from '../../../utils/url';
 
 const categoria = categorias.find((c) => c.slug === 'bienes-raices')!;
 // [PENDIENTE: video corto inmobiliario en bucle]. Mientras tanto, la portada de la categoría.
@@ -15,7 +17,7 @@ const propiedades = tarjetasDeProyectos(categoria);
 const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 ---
 
-<Base titulo={categoria.titulo} descripcion={texto.descripcion} encabezadoSuperpuesto>
+<Base titulo={categoria.titulo} descripcion={texto.inicio.descripcion} encabezadoSuperpuesto>
 	<section class="portada" aria-labelledby="br-titulo">
 		<div class="fondo" aria-hidden="true">
 			{
@@ -35,31 +37,34 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 		</div>
 
 		<div class="contenedor contenido">
-			<p class="antetitulo">{categoria.titulo}</p>
-			<h1 id="br-titulo">{texto.titular}</h1>
-			<p class="descripcion">{texto.descripcion}</p>
+			<p class="antetitulo" lang="en">{texto.inicio.antetitulo}</p>
+			<h1 id="br-titulo">{texto.inicio.titular}</h1>
+			<p class="descripcion">{texto.inicio.descripcion}</p>
 			<div class="acciones">
-				<a href={cotizar} class="boton" target="_blank" rel="noopener noreferrer">
-					{texto.cierre.boton}<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
+				<a href="#propiedades" class="boton">{texto.inicio.principal}</a>
+				<a href={cotizar} class="enlace-accion" target="_blank" rel="noopener noreferrer">
+					{texto.inicio.secundario} <span aria-hidden="true">→</span>
+					<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
 				</a>
-				<a href="#propiedades" class="enlace-accion">Ver propiedades <span aria-hidden="true">↓</span></a>
 			</div>
 		</div>
 	</section>
 
 	<section class="seccion contenedor propuesta" aria-labelledby="br-propuesta">
 		<h2 id="br-propuesta" class="titulo-seccion">{texto.propuesta.titulo}</h2>
-		<p>{texto.propuesta.texto}</p>
+		<div class="propuesta-texto">
+			{texto.propuesta.parrafos.map((parrafo, i) => <p class:list={[{ entrada: i === 0 }]}>{parrafo}</p>)}
+		</div>
 	</section>
 
 	<section class="seccion contenedor" aria-labelledby="br-servicios">
 		<div class="titulo-con-barra">
-			<h2 id="br-servicios" class="titulo-seccion">Qué hacemos</h2>
+			<h2 id="br-servicios" class="titulo-seccion"><Lineas lineas={texto.servicios.titulo} /></h2>
 			<span class="barra-alexo" aria-hidden="true"></span>
 		</div>
 		<ul class="columnas servicios">
 			{
-				texto.servicios.map((servicio) => (
+				texto.servicios.lista.map((servicio) => (
 					<li>
 						<h3>{servicio.titulo}</h3>
 						<p>{servicio.texto}</p>
@@ -71,9 +76,10 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 
 	<section id="propiedades" class="seccion contenedor" aria-labelledby="br-propiedades">
 		<div class="titulo-con-barra">
-			<h2 id="br-propiedades" class="titulo-seccion">Portafolio de<br class="salto-angosto" /> propiedades</h2>
+			<h2 id="br-propiedades" class="titulo-seccion"><Lineas lineas={texto.portafolio.titulo} /></h2>
 			<span class="barra-alexo" aria-hidden="true"></span>
 		</div>
+		<p class="entrada-seccion">{texto.portafolio.entrada}</p>
 		{
 			propiedades.length > 0 ? (
 				<RejillaTarjetas tarjetas={propiedades} nivel="h3" />
@@ -85,9 +91,7 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 
 	<section class="seccion contenedor" aria-labelledby="br-beneficios">
 		<div class="titulo-con-barra">
-			<h2 id="br-beneficios" class="titulo-seccion">
-				{texto.beneficios.titulo.inicio}<br class="salto-angosto" /> {texto.beneficios.titulo.fin}
-			</h2>
+			<h2 id="br-beneficios" class="titulo-seccion">{texto.beneficios.titulo}</h2>
 			<span class="barra-alexo" aria-hidden="true"></span>
 		</div>
 		<ol class="columnas beneficios">
@@ -105,9 +109,15 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 	<section class="seccion contenedor cierre" aria-labelledby="br-cierre">
 		<h2 id="br-cierre">{texto.cierre.titulo}</h2>
 		<p>{texto.cierre.texto}</p>
-		<a href={cotizar} class="boton" target="_blank" rel="noopener noreferrer">
-			{texto.cierre.boton}<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
-		</a>
+		<div class="acciones">
+			<a href={cotizar} class="boton" target="_blank" rel="noopener noreferrer">
+				{texto.cierre.principal}<span class="solo-lector"> (WhatsApp, se abre en otra pestaña)</span>
+			</a>
+			<a href={url('/proyectos/')} class="enlace-accion">
+				{texto.cierre.secundario} <span aria-hidden="true">→</span>
+			</a>
+		</div>
+		<p class="firma">{texto.cierre.firma}</p>
 	</section>
 </Base>
 
@@ -162,13 +172,6 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 		padding-block: 7rem 3rem; /* arriba: espacio del encabezado superpuesto */
 	}
 
-	.antetitulo {
-		font-size: var(--texto-pequeno);
-		font-weight: 600;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-
 	h1 {
 		max-width: 18ch;
 		font-size: var(--texto-hero);
@@ -195,11 +198,22 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 		gap: 1.5rem;
 	}
 
-	.propuesta p {
+	.propuesta-texto {
+		display: grid;
+		gap: 1.25rem;
+		align-content: start;
+	}
+
+	.propuesta-texto p {
 		max-width: 52ch;
-		font-size: var(--texto-tarjeta);
-		line-height: 1.4;
 		color: var(--color-texto-suave);
+	}
+
+	/* Primer párrafo: la idea fuerte, más grande y en blanco */
+	.propuesta-texto .entrada {
+		font-size: var(--texto-tarjeta);
+		line-height: 1.35;
+		color: var(--color-texto);
 	}
 
 	@media (min-width: 48rem) {
@@ -256,6 +270,13 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 		color: var(--color-texto-tenue);
 	}
 
+	/* Entrada del portafolio: pegada al título, no a la distancia de la rejilla */
+	.entrada-seccion {
+		max-width: 52ch;
+		margin-top: -1.25rem;
+		color: var(--color-texto-suave);
+	}
+
 	.provisional {
 		aspect-ratio: 3 / 2;
 	}
@@ -273,5 +294,20 @@ const cotizar = whatsAppConMensaje(texto.cierre.mensajeWhatsApp);
 
 	.cierre p {
 		color: var(--color-texto-suave);
+	}
+
+	.cierre .acciones {
+		justify-content: center;
+		margin-top: 0;
+	}
+
+	/* Firma: rótulo pequeño, como el antetítulo pero atenuado */
+	.cierre .firma {
+		margin-top: 1rem;
+		font-size: var(--texto-pequeno);
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-texto-tenue);
 	}
 </style>

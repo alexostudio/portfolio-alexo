@@ -152,6 +152,15 @@ button {
 	font-size: var(--texto-seccion);
 }
 
+/* Antetítulo: rótulo pequeño en mayúsculas sobre un titular (hero, Sobre, Bienes Raíces) */
+.antetitulo {
+	font-family: var(--fuente-texto);
+	font-size: var(--texto-pequeno);
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
 /* Título + barra arcoíris del mismo ancho que el texto */
 .titulo-con-barra {
 	display: grid;

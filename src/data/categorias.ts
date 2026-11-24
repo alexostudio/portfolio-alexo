@@ -47,13 +47,14 @@ export interface Foto {
 	alt: string;
 }
 
+// Descripciones de categoría: contenidoTexto.md (2026-11-23); las ocultas siguen en lorem.
 // Orden del documento de ajustes (punto 5). Bodas y Hotelería: cuando haya material.
 // Eventos no figura en el documento: oculta hasta que se decida.
 export const categorias: Categoria[] = [
 	{
 		slug: 'bienes-raices',
 		titulo: 'Bienes Raíces',
-		descripcion: LOREM,
+		descripcion: 'Imagen y contenido audiovisual para espacios inmobiliarios.',
 		publicada: true,
 		portada: 'bienes-raices-04.jpg',
 		color: COLORES.ocre,
@@ -85,7 +86,7 @@ export const categorias: Categoria[] = [
 	{
 		slug: 'arquitectura',
 		titulo: 'Arquitectura',
-		descripcion: LOREM,
+		descripcion: 'Luz, forma y composición en el espacio construido.',
 		publicada: true,
 		color: COLORES.petroleo,
 		proyectos: [],
@@ -93,7 +94,7 @@ export const categorias: Categoria[] = [
 	{
 		slug: 'gastronomia',
 		titulo: 'Gastronomía',
-		descripcion: LOREM,
+		descripcion: 'La identidad y la experiencia detrás de cada propuesta.',
 		publicada: true,
 		portada: 'gastronomia-05.jpg',
 		color: COLORES.terracota,
@@ -121,7 +122,7 @@ export const categorias: Categoria[] = [
 	{
 		slug: 'musica-y-conciertos',
 		titulo: 'Música y conciertos',
-		descripcion: LOREM,
+		descripcion: 'La energía del escenario, capturada en imágenes.',
 		publicada: true,
 		portada: 'musica-y-conciertos-03.jpg',
 		color: COLORES.azul,
@@ -150,7 +151,7 @@ export const categorias: Categoria[] = [
 	{
 		slug: 'retrato',
 		titulo: 'Retrato',
-		descripcion: LOREM,
+		descripcion: 'Identidad, expresión y carácter en cada imagen.',
 		publicada: true,
 		color: COLORES.vino,
 		proyectos: [],
@@ -180,6 +181,10 @@ export const categorias: Categoria[] = [
 		proyectos: [],
 	},
 ];
+
+/** Entrada de la sección de proyectos (portada y /proyectos/). contenidoTexto.md, 2026-11-23. */
+export const entradaProyectos =
+	'Una selección de proyectos de fotografía, cine y producción audiovisual.';
 
 export const categoriasPublicadas = categorias.filter((categoria) => categoria.publicada);
 

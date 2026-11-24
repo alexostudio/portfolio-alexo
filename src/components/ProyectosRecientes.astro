@@ -1,13 +1,14 @@
 ---
-import { tarjetasDeCategorias } from '../data/categorias';
+import { entradaProyectos, tarjetasDeCategorias } from '../data/categorias';
 import RejillaTarjetas from './RejillaTarjetas.astro';
 ---
 
 <section id="proyectos" class="seccion contenedor proyectos" aria-labelledby="proyectos-titulo">
 	<div class="titulo-con-barra">
-		<h2 id="proyectos-titulo" class="titulo-seccion">Proyectos recientes</h2>
+		<h2 id="proyectos-titulo" class="titulo-seccion">Trabajo seleccionado.</h2>
 		<span class="barra-alexo" aria-hidden="true"></span>
 	</div>
+	<p class="entrada">{entradaProyectos}</p>
 
 	<RejillaTarjetas tarjetas={tarjetasDeCategorias()} nivel="h3" />
 </section>
@@ -16,5 +17,12 @@ import RejillaTarjetas from './RejillaTarjetas.astro';
 	.proyectos {
 		display: grid;
 		gap: 2.5rem;
+	}
+
+	/* La entrada va pegada al título, no a la distancia de la rejilla */
+	.entrada {
+		max-width: 52ch;
+		margin-top: -1.25rem;
+		color: var(--color-texto-suave);
 	}
 </style>

@@ -1,0 +1,11 @@
+---
+// Título partido en líneas que solo se separan en pantallas angostas (br.salto-angosto):
+// así la barra de un .titulo-con-barra mide lo mismo que la línea más larga.
+interface Props {
+	lineas: string[];
+}
+
+const { lineas } = Astro.props;
+---
+
+{lineas.map((linea, i) => (i === 0 ? linea : <><br class="salto-angosto" /> {linea}</>))}

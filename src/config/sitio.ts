@@ -5,7 +5,7 @@ import { url } from '../utils/url';
 export const sitio = {
 	nombre: 'ALEXO',
 	descripcion:
-		'Fotografía y producción audiovisual desde una mirada cinematográfica, creativa y contemporánea.',
+		'Fotografía y producción audiovisual que combinan estética, narrativa y propósito.',
 	ubicacion: 'Ciudad de México',
 	correo: 'alexo.filmstudio@gmail.com',
 	telefono: {
